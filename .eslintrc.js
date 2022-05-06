@@ -1,13 +1,38 @@
 module.exports = {
-  extends: ["plugin:react-hooks/recommended"],
-  plugins: [
-    "react-hooks",
-    "react-app",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint", "react-hooks", "simple-import-sort"],
+  env: {
+    es6: true,
+    browser: true,
+    jest: true,
+    node: true,
+  },
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
   rules: {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": 0,
+    "react/display-name": 0,
+    "react/prop-types": 0,
+    "simple-import-sort/imports": 2,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 2,
+    "react/jsx-filename-extension": [1, {extensions: [".js", ".jsx", ".tsx"]}], //should add ".ts" if typescript project
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        argsIgnorePattern: "^_",
+      },
+    ],
+    "no-console": [
+      2,
+      {
+        allow: ["warn", "error"],
+      },
+    ],
   },
 }
