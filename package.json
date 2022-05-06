@@ -30,9 +30,10 @@
     }
   },
   "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": false,
+    "bracketSpacing": false,
     "trailingComma": "es5"
   },
   "name": "masiu-hooks",
@@ -59,6 +60,7 @@
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.3",
     "babel-loader": "^8.2.5",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "husky": "^7.0.4",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
