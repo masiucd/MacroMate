@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@babel/core': ^7.17.10
+  '@emotion/css': ^11.9.0
   '@size-limit/preset-small-lib': ^7.0.8
   '@storybook/addon-docs': ^6.4.22
   '@storybook/addon-essentials': ^6.4.22
@@ -35,6 +36,7 @@ specifiers:
 
 devDependencies:
   '@babel/core': 7.17.10
+  '@emotion/css': 11.9.0_@babel+core@7.17.10
   '@size-limit/preset-small-lib': 7.0.8_size-limit@7.0.8
   '@storybook/addon-docs': 6.4.22_e54e1a49e4f3adfc6c0cc51878fa0406
   '@storybook/addon-essentials': 6.4.22_aec11aa7c6a937ef5cbe77b76d19cd5a
@@ -1559,6 +1561,26 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
+  /@emotion/babel-plugin/11.9.2_@babel+core@7.17.10:
+    resolution: {integrity: sha1-cjttOUyJ+y73giKdkrqVp0BXbpU=}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.17.10
+      '@babel/helper-module-imports': 7.16.7
+      '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.17.10
+      '@babel/runtime': 7.17.9
+      '@emotion/hash': 0.8.0
+      '@emotion/memoize': 0.7.5
+      '@emotion/serialize': 1.0.3
+      babel-plugin-macros: 2.8.0
+      convert-source-map: 1.8.0
+      escape-string-regexp: 4.0.0
+      find-root: 1.1.0
+      source-map: 0.5.7
+      stylis: 4.0.13
+    dev: true
+
   /@emotion/cache/10.0.29:
     resolution: {integrity: sha1-h+fmT0EsBgEC1Yn+fG3AQub50eA=}
     dependencies:
@@ -1566,6 +1588,16 @@ packages:
       '@emotion/stylis': 0.8.5
       '@emotion/utils': 0.11.3
       '@emotion/weak-memoize': 0.2.5
+    dev: true
+
+  /@emotion/cache/11.7.1:
+    resolution: {integrity: sha1-CNCA45akLgA3hIIU6Kp7+HkGVTk=}
+    dependencies:
+      '@emotion/memoize': 0.7.4
+      '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.1.0
+      '@emotion/weak-memoize': 0.2.5
+      stylis: 4.0.13
     dev: true
 
   /@emotion/core/10.3.1_react@16.14.0:
@@ -1604,6 +1636,22 @@ packages:
       babel-plugin-emotion: 10.2.2
     dev: true
 
+  /@emotion/css/11.9.0_@babel+core@7.17.10:
+    resolution: {integrity: sha1-1a6spe0Z/GHL3J4DKtCzL6bjZr4=}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+    dependencies:
+      '@babel/core': 7.17.10
+      '@emotion/babel-plugin': 11.9.2_@babel+core@7.17.10
+      '@emotion/cache': 11.7.1
+      '@emotion/serialize': 1.0.3
+      '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.1.0
+    dev: true
+
   /@emotion/hash/0.8.0:
     resolution: {integrity: sha1-u7/2iXj+/b5ozLUzvIy+HRr7VBM=}
     dev: true
@@ -1618,6 +1666,10 @@ packages:
     resolution: {integrity: sha1-Gb8PWvGRSREcQNmLsM+CEZ9dnus=}
     dev: true
 
+  /@emotion/memoize/0.7.5:
+    resolution: {integrity: sha1-LED4FEmk5VTp/GOWkQ7UhD7CvlA=}
+    dev: true
+
   /@emotion/serialize/0.11.16:
     resolution: {integrity: sha1-3uBfnpatL7JaUga211my0e0zea0=}
     dependencies:
@@ -1628,8 +1680,22 @@ packages:
       csstype: 2.6.20
     dev: true
 
+  /@emotion/serialize/1.0.3:
+    resolution: {integrity: sha1-meIGDCbGKSRp+zDbQfRpDhyP6mM=}
+    dependencies:
+      '@emotion/hash': 0.8.0
+      '@emotion/memoize': 0.7.4
+      '@emotion/unitless': 0.7.5
+      '@emotion/utils': 1.1.0
+      csstype: 3.0.11
+    dev: true
+
   /@emotion/sheet/0.9.4:
     resolution: {integrity: sha1-iUN0vqOeww9Im7/DQ4GSuXdNMuU=}
+    dev: true
+
+  /@emotion/sheet/1.1.0:
+    resolution: {integrity: sha1-VtmcQfChzaJyagWqaiCv1MY+WNI=}
     dev: true
 
   /@emotion/styled-base/10.3.0_864809d686fef2043b51d8d752270dc1:
@@ -1694,6 +1760,10 @@ packages:
 
   /@emotion/utils/0.11.3:
     resolution: {integrity: sha1-p1mGOGe++n5YNADTImUqP0SCCSQ=}
+    dev: true
+
+  /@emotion/utils/1.1.0:
+    resolution: {integrity: sha1-hrCyl/PxoPK9sI7qyaL0mv1A0M8=}
     dev: true
 
   /@emotion/weak-memoize/0.2.5:
@@ -13358,6 +13428,10 @@ packages:
     resolution: {integrity: sha1-sbeQ0gWZHMeDgBlnIUl57hmnbkY=}
     dependencies:
       inline-style-parser: 0.1.1
+    dev: true
+
+  /stylis/4.0.13:
+    resolution: {integrity: sha1-9dszLjdtE8yE7P5drOmipR2VTJE=}
     dev: true
 
   /supports-color/5.5.0:

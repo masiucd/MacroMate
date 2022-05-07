@@ -1,21 +1,49 @@
 import {Canvas, Meta, Story, ArgsTable} from "@storybook/addon-docs"
 import {useRef} from "react"
 import {action} from "@storybook/addon-actions"
-import {useToggle, Foo} from "../src"
+import {css, cx} from "@emotion/css"
+import {useToggle} from "../src"
 
-<Meta title="hooks/Foo" component={Foo} />
+<Meta title="hooks/Use toggle hook" />
+
+export const Wrapper = ({defaultState}) => {
+  const [state, {toggle}] = useToggle(defaultState)
+  return (
+    <div
+      className={css`
+        padding: 1rem;
+        background: #ccc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        width: 25em;
+      `}
+    >
+      <h1> I am now {state ? "on" : "off"} </h1>
+      <button
+        onClick={toggle}
+        className={css`
+          padding: 0.2rem;
+          width: 11em;
+          margin: 0 auto;
+          border-radius: 0.2rem;
+          border: 1px solid #333;
+          box-shadow: 0 0 0.2rem 0 #333;
+          background: #fff;
+        `}
+      >
+        Click
+      </button>
+    </div>
+  )
+}
 
 <Canvas>
-  <Story name="useToggle" args={{on: true}}>
-    {(args) => {
-      const [state] = useToggle()
-      return (
-        <div>
-          <button>Click</button>
-        </div>
-      )
-    }}
+  <Story name="Use toggle hook" args={{defaultState: false}}>
+    {(args) => <Wrapper {...args} />}
   </Story>
 </Canvas>
 
-<ArgsTable story="useToggle" />
+<ArgsTable story="Use toggle hook" />
