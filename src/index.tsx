@@ -1,2 +1,2 @@
 export * from "./toggle"
-export * from "./Foo"
+export * from "./timer"

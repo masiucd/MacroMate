@@ -23,7 +23,7 @@ const useTimer = () => {
 
   let secondsPassed = 0
   if (startTime !== null && now !== null) {
-    secondsPassed = Math.floor((now - startTime) / 1000)
+    secondsPassed = (now - startTime) / 1000
   }
   return [secondsPassed, start, stop]
 }
