@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -52,8 +52,10 @@
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@size-limit/preset-small-lib": "^7.0.8",
+    "@storybook/addon-docs": "^6.4.22",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-info": "^5.3.21",
+    "@storybook/addon-interactions": "^6.4.22",
     "@storybook/addon-links": "^6.4.22",
     "@storybook/addons": "^6.4.22",
     "@storybook/react": "^6.4.22",
@@ -63,6 +65,8 @@
     "@typescript-eslint/parser": "^5.22.0",
     "babel-loader": "^8.2.5",
     "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "7.28.0",
     "eslint-plugin-react-hooks": "^4.5.0",
     "husky": "^7.0.4",
     "react": "^18.1.0",
