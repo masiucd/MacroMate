@@ -1,0 +1,21 @@
+import {Canvas, Meta, Story, ArgsTable} from "@storybook/addon-docs"
+import {useRef} from "react"
+import {action} from "@storybook/addon-actions"
+import {useToggle, Foo} from "../src"
+
+<Meta title="hooks/Foo" component={Foo} />
+
+<Canvas>
+  <Story name="useToggle" args={{on: true}}>
+    {(args) => {
+      const [state] = useToggle()
+      return (
+        <div>
+          <button>Click</button>
+        </div>
+      )
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="useToggle" />

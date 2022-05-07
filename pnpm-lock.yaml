@@ -10,6 +10,10 @@ specifiers:
   '@storybook/addon-links': ^6.4.22
   '@storybook/addons': ^6.4.22
   '@storybook/react': ^6.4.22
+  '@testing-library/jest-dom': ^5.16.4
+  '@testing-library/react': ^13.2.0
+  '@testing-library/react-hooks': ^8.0.0
+  '@testing-library/user-event': ^14.1.1
   '@types/react': ^18.0.8
   '@types/react-dom': ^18.0.3
   '@typescript-eslint/eslint-plugin': ^5.22.0
@@ -23,6 +27,7 @@ specifiers:
   react: ^18.1.0
   react-dom: ^18.1.0
   react-is: ^18.1.0
+  react-select-event: ^5.5.0
   size-limit: ^7.0.8
   tsdx: ^0.14.1
   tslib: ^2.4.0
@@ -38,6 +43,10 @@ devDependencies:
   '@storybook/addon-links': 6.4.22_react-dom@18.1.0+react@18.1.0
   '@storybook/addons': 6.4.22_react-dom@18.1.0+react@18.1.0
   '@storybook/react': 6.4.22_48f9e57da6bd1a428e5b329025cfd3ef
+  '@testing-library/jest-dom': 5.16.4
+  '@testing-library/react': 13.2.0_react-dom@18.1.0+react@18.1.0
+  '@testing-library/react-hooks': 8.0.0_47ae209ab5c2ea051c9a2540426c6b2f
+  '@testing-library/user-event': 14.1.1
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
   '@typescript-eslint/eslint-plugin': 5.22.0_5b52bb1e77494a9627aef8db6adb10bc
@@ -51,6 +60,7 @@ devDependencies:
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
   react-is: 18.1.0
+  react-select-event: 5.5.0
   size-limit: 7.0.8
   tsdx: 0.14.1
   tslib: 2.4.0
@@ -3801,6 +3811,83 @@ packages:
       - '@types/react'
     dev: true
 
+  /@testing-library/dom/8.13.0:
+    resolution: {integrity: sha1-vAC91kx9i0CEHienAhE5mtOvRvU=}
+    engines: {node: '>=12'}
+    dependencies:
+      '@babel/code-frame': 7.16.7
+      '@babel/runtime': 7.17.9
+      '@types/aria-query': 4.2.2
+      aria-query: 5.0.0
+      chalk: 4.1.2
+      dom-accessibility-api: 0.5.14
+      lz-string: 1.4.4
+      pretty-format: 27.5.1
+    dev: true
+
+  /@testing-library/jest-dom/5.16.4:
+    resolution: {integrity: sha1-k4MC17i0g5Y6Ough8cCAj4ciRc0=}
+    engines: {node: '>=8', npm: '>=6', yarn: '>=1'}
+    dependencies:
+      '@babel/runtime': 7.17.9
+      '@types/testing-library__jest-dom': 5.14.3
+      aria-query: 5.0.0
+      chalk: 3.0.0
+      css: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.5.14
+      lodash: 4.17.21
+      redent: 3.0.0
+    dev: true
+
+  /@testing-library/react-hooks/8.0.0_47ae209ab5c2ea051c9a2540426c6b2f:
+    resolution: {integrity: sha1-fQFkv/zkZH9QYDneCpf2/L0g9L8=}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@types/react': ^16.9.0 || ^17.0.0
+      react: ^16.9.0 || ^17.0.0
+      react-dom: ^16.9.0 || ^17.0.0
+      react-test-renderer: ^16.9.0 || ^17.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react-dom:
+        optional: true
+      react-test-renderer:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.17.9
+      '@types/react': 18.0.8
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-error-boundary: 3.1.4_react@18.1.0
+    dev: true
+
+  /@testing-library/react/13.2.0_react-dom@18.1.0+react@18.1.0:
+    resolution: {integrity: sha1-LbALyU1xxOkOXCVYLpCmUK4pJb8=}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.17.9
+      '@testing-library/dom': 8.13.0
+      '@types/react-dom': 18.0.3
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+    dev: true
+
+  /@testing-library/user-event/14.1.1:
+    resolution: {integrity: sha1-4f9hGIluSyKvMeXqL52pVq3eI9g=}
+    engines: {node: '>=12', npm: '>=6'}
+    peerDependencies:
+      '@testing-library/dom': '>=7.21.4'
+    dev: true
+
+  /@types/aria-query/4.2.2:
+    resolution: {integrity: sha1-7U4K2SMGpwT5+xMqDPz3dIbb4rw=}
+    dev: true
+
   /@types/babel__core/7.1.19:
     resolution: {integrity: sha1-e0l0lbfRtIEr250CgE0FdvQ+5GA=}
     dependencies:
@@ -4036,6 +4123,12 @@ packages:
 
   /@types/tapable/1.0.8:
     resolution: {integrity: sha1-uUpDkchWZse3Mpn9OtedT6pDUxA=}
+    dev: true
+
+  /@types/testing-library__jest-dom/5.14.3:
+    resolution: {integrity: sha1-7mx//p+FlYgu572orzOue4eJ7xc=}
+    dependencies:
+      '@types/jest': 25.2.3
     dev: true
 
   /@types/uglify-js/3.13.2:
@@ -4618,6 +4711,11 @@ packages:
       color-convert: 2.0.1
     dev: true
 
+  /ansi-styles/5.2.0:
+    resolution: {integrity: sha1-B0SWkK1Fd30ZJKwquy/IiV26g2s=}
+    engines: {node: '>=10'}
+    dev: true
+
   /ansi-to-html/0.6.15:
     resolution: {integrity: sha1-rGrUeYoA9qoEVTXX9qnLkpTuvqc=}
     engines: {node: '>=8.0.0'}
@@ -4677,6 +4775,11 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       '@babel/runtime-corejs3': 7.17.9
+    dev: true
+
+  /aria-query/5.0.0:
+    resolution: {integrity: sha1-IQwhqvRpYT7oyaYsf4ZSXgWNtSw=}
+    engines: {node: '>=6.0'}
     dev: true
 
   /arr-diff/4.0.0:
@@ -6171,6 +6274,18 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
+  /css.escape/1.5.1:
+    resolution: {integrity: sha1-QuJ9T6BK4y+TGktNQZH6nN3ul8s=}
+    dev: true
+
+  /css/3.0.0:
+    resolution: {integrity: sha1-REek1Y/dAzZ8UWyp9krjZc7kql0=}
+    dependencies:
+      inherits: 2.0.4
+      source-map: 0.6.1
+      source-map-resolve: 0.6.0
+    dev: true
+
   /cssesc/3.0.0:
     resolution: {integrity: sha1-N3QZGZA7hoVl4cCep0dEXNGJg+4=}
     engines: {node: '>=4'}
@@ -6415,6 +6530,10 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       esutils: 2.0.3
+    dev: true
+
+  /dom-accessibility-api/0.5.14:
+    resolution: {integrity: sha1-VggvcbHceqxp2DxChe7znBXZP1Y=}
     dev: true
 
   /dom-converter/0.2.0:
@@ -10099,6 +10218,11 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /lz-string/1.4.4:
+    resolution: {integrity: sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=}
+    hasBin: true
+    dev: true
+
   /magic-string/0.25.9:
     resolution: {integrity: sha1-3n+fr5HvihyR0CwuUxTIJ3283Rw=}
     dependencies:
@@ -11375,6 +11499,15 @@ packages:
       react-is: 16.13.1
     dev: true
 
+  /pretty-format/27.5.1:
+    resolution: {integrity: sha1-IYGHn96lGnpYUfs52SD6pj8B2I4=}
+    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
+    dependencies:
+      ansi-regex: 5.0.1
+      ansi-styles: 5.2.0
+      react-is: 17.0.2
+    dev: true
+
   /pretty-hrtime/1.0.3:
     resolution: {integrity: sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=}
     engines: {node: '>= 0.8'}
@@ -11724,6 +11857,16 @@ packages:
       react-is: 17.0.2
     dev: true
 
+  /react-error-boundary/3.1.4_react@18.1.0:
+    resolution: {integrity: sha1-JV25KyMZcQh1eoiLAeW3KZGaveA=}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.17.9
+      react: 18.1.0
+    dev: true
+
   /react-fast-compare/3.2.0:
     resolution: {integrity: sha1-ZBqdqBtqYyDycOiXJPtFoLOeQ7s=}
     dev: true
@@ -11884,6 +12027,12 @@ packages:
       react: 18.1.0
     dev: true
 
+  /react-select-event/5.5.0:
+    resolution: {integrity: sha1-FIBn91hG9r8HJUxFMIPy09WZNfY=}
+    dependencies:
+      '@testing-library/dom': 8.13.0
+    dev: true
+
   /react-sizeme/3.0.2:
     resolution: {integrity: sha1-Si8WeQW6j4uNkyqeNRZORZ+QIOQ=}
     dependencies:
@@ -12026,6 +12175,14 @@ packages:
     engines: {node: '>= 0.10'}
     dependencies:
       resolve: 1.22.0
+    dev: true
+
+  /redent/3.0.0:
+    resolution: {integrity: sha1-5Ve3mYMWu1PJ8fVvpiY1LGljBZ8=}
+    engines: {node: '>=8'}
+    dependencies:
+      indent-string: 4.0.0
+      strip-indent: 3.0.0
     dev: true
 
   /refractor/2.10.1:

@@ -16,7 +16,7 @@ export default create({
   fontBase: '"Roboto", sans-serif',
   fontCode: "monospace",
 
-  brandTitle: "Edvin-js components",
+  brandTitle: "masiu hooks",
   // brandUrl: "https://example.com",
   // brandImage: 'https://place-hold.it/350x150',
 })
