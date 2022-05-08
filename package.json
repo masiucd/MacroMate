@@ -3,6 +3,10 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/masiucd/masiu-hooks.git"
+  },
   "files": [
     "dist",
     "src"
@@ -37,7 +41,13 @@
     "trailingComma": "es5"
   },
   "name": "masiu-hooks",
-  "author": "Marcell Ciszek",
+  "author": "Marcell Ciszek Druzynski",
+  "tags": [
+    "react",
+    "hooks",
+    "typescript",
+    "typescript-hooks"
+  ],
   "module": "dist/masiu-hooks.esm.js",
   "size-limit": [
     {
