@@ -1,7 +1,6 @@
 import React from "react"
 import {renderHook} from "@testing-library/react-hooks"
 import {useToggle} from "../src"
-// import userEvent from "@testing-library/user-event"
 import {render} from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 

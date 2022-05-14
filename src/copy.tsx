@@ -1,6 +1,6 @@
 import {useState} from "react"
 
-const useCopy = () => {
+const useCopy = (): [string | null, (text: string) => Promise<boolean>] => {
   const [copiedText, setCopiedText] = useState<string | null>(null)
   const copy = async (text: string) => {
     if (!navigator?.clipboard) {
