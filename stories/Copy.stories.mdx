@@ -1,0 +1,41 @@
+import {Canvas, Meta, Story, ArgsTable} from "@storybook/addon-docs"
+import {action} from "@storybook/addon-actions"
+import {css, cx} from "@emotion/css"
+import {useCopy} from "../src"
+
+<Meta title="hooks/useCoppy hook" />
+
+export const Wrapper = ({inputText}) => {
+  const [text, copy] = useCopy()
+  return (
+    <div
+      className={css`
+        width: 20em;
+        height: 10em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        button {
+          margin-left: 0.2em;
+          font-size: 1.2em;
+          border-radius: 0.2em;
+          border: 1px solid #333;
+          background: #fefefe;
+          cursor: pointer;
+        }
+      `}
+    >
+      <button onClick={() => copy("A")}>Copy A</button>
+      <button onClick={() => copy("B")}>Copy B</button>
+      <button onClick={() => copy("C")}>Copy C</button>
+    </div>
+  )
+}
+
+<Canvas>
+  <Story name="useCoppy hook" args={{inputText: ""}}>
+    {(args) => <Wrapper {...args} />}
+  </Story>
+</Canvas>
+
+<ArgsTable story="useCoppy hook" />
