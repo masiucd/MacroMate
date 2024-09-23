@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type {ReactNode} from "react";
 
+import {Decks} from "./_components/decks";
+import {NewDeck} from "./_components/new-deck";
+
 let now = new Date().getFullYear();
 
 export default function RootLayout({
@@ -40,13 +43,7 @@ export default function RootLayout({
           {/* {Descs} */}
           {/* Logout */}
 
-          <div>
-            <p>Decks</p>
-            <ul className="pl-1">
-              {/* Render decks here */}
-              <button>New deck</button>
-            </ul>
-          </div>
+          <Decks />
         </aside>
         <div className="flex-1 border border-blue-700 px-5">
           {children}
