@@ -6,7 +6,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
     ports:
-      - ${DB_PORT}:5433 # Expose the database on the specified port from the container to the host
+      - ${DB_PORT}:5432 # Expose the database on the specified port from the container to the host
     volumes:
       - ./db-data:/var/lib/postgresql/data # Persist the database data in the host machine
   inmemory:
