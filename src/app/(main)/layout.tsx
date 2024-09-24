@@ -2,7 +2,6 @@ import Link from "next/link";
 import type {ReactNode} from "react";
 
 import {Decks} from "./_components/decks";
-import {NewDeck} from "./_components/new-deck";
 
 let now = new Date().getFullYear();
 
@@ -14,7 +13,7 @@ export default function RootLayout({
   return (
     <>
       <header>
-        <div className="mx-auto flex h-20 max-w-screen-xl justify-between">
+        <div className="mx-auto flex h-20 max-w-screen-2xl justify-between">
           <Link href="/">
             <strong>learning is fun</strong>
           </Link>
@@ -50,7 +49,7 @@ export default function RootLayout({
         </div>
       </main>
       <footer>
-        <div className="mx-auto flex h-20 max-w-screen-xl justify-between">
+        <div className="mx-auto flex h-20 max-w-screen-2xl justify-between">
           <small>@ {now} Learning is fun</small>
         </div>
       </footer>
