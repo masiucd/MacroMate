@@ -1,4 +1,10 @@
-export default function DashboardPage() {
+import {cookies} from "next/headers";
+
+import {redis} from "@/db/redis";
+import {decrypt} from "@/lib/utils/jwt";
+
+export default async function DashboardPage() {
+  await checkAuth();
   return (
     <div>
       <h1>Dashboard</h1>
@@ -10,4 +16,22 @@ export default function DashboardPage() {
       </p>
     </div>
   );
+}
+
+async function checkAuth() {
+  let cookieStore = cookies();
+  let session = cookieStore.get("session");
+  console.log("session", session);
+  if (!session) {
+    return null;
+  }
+  let decrypted = await decrypt(session?.value);
+  console.log("decrypted", decrypted);
+  let result = await redis.getex(`session:${session}`);
+  if (result?.length === 0) {
+    return null;
+  }
+  console.log("result", result);
+
+  return session;
 }

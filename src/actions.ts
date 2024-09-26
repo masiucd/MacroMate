@@ -53,8 +53,14 @@ export async function login(
   if (token === null) {
     return {message: "Error Logging In"};
   }
-  const ONE_HOUR = 60 * 60; // 1 hour 3600 seconds
-  redis.setex(`session:${token}`, ONE_HOUR, token); // 1 hour expiry
+
+  setSessionAndCookie(user.id, token);
+  redirect("/dashboard");
+}
+
+const ONE_HOUR = 60 * 60; // 1 hour 3600 seconds
+function setSessionAndCookie(userId: number, token: string) {
+  redis.setex(`session:${userId}`, ONE_HOUR, token); // 1 hour expiry
   let cookieStore = cookies();
   cookieStore.set("session", token, {
     httpOnly: true,
@@ -62,5 +68,4 @@ export async function login(
     maxAge: ONE_HOUR,
     path: "/",
   });
-  redirect("/dashboard");
 }
