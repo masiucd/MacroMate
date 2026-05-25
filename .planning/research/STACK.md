@@ -3,12 +3,14 @@
 ## Recommended Stack
 
 ### Framework
-**React 18 + Vite**
-- React: Component model fits multi-step wizard perfectly (step state, form state)
-- Vite: Fast dev server, tiny bundle, zero config for client-only apps
-- Confidence: High
+**TanStack Start (latest) + React** ⚠️ USER-LOCKED CHOICE
+- TanStack Start is a full-stack React framework built on TanStack Router
+- User explicitly requires the latest version of TanStack Start with React
+- Vite is used internally by TanStack Start for bundling — no separate Vite config needed
+- Confidence: Locked (not a recommendation — user decision)
 
-**Alternative: Next.js** — overkill for a stateless client-only app; SSR adds complexity with no benefit here.
+**Previously considered: React 18 + Vite standalone** — superseded by TanStack Start decision.
+**Alternative: Next.js** — not applicable given user's explicit framework choice.
 
 ### Styling
 **Tailwind CSS v3**

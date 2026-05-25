@@ -13,6 +13,11 @@ Build the pure calculation library that powers all macro outputs. No UI. Impleme
 <decisions>
 ## Implementation Decisions
 
+### Framework (Locked)
+- **TanStack Start (latest) with React** — this is the framework for the entire app, not Vite standalone
+- TanStack Start is a full-stack React framework built on TanStack Router; use its latest version
+- The calculation library (`src/lib/`) is framework-agnostic pure functions, but the project scaffolding must be TanStack Start
+
 ### BMR Formula
 - Use Mifflin-St Jeor (1990), not Harris-Benedict
 - Sex input: Male / Female only (binary) — formula is defined for these two values
