@@ -73,10 +73,15 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+| CALC-01 | Phase 1 | Pending |
+| CALC-02 | Phase 1 | Pending |
+| CALC-03 | Phase 1 | Pending |
+| CALC-04 | Phase 1 | Pending |
+| CALC-05 | Phase 1 | Pending |
+| CALC-06 | Phase 1 | Pending |
 | WIZ-01 | Phase 2 | Pending |
 | WIZ-02 | Phase 2 | Pending |
 | WIZ-03 | Phase 2 | Pending |
-| WIZ-04 | Phase 3 | Pending |
 | STAT-01 | Phase 2 | Pending |
 | STAT-02 | Phase 2 | Pending |
 | STAT-03 | Phase 2 | Pending |
@@ -87,17 +92,12 @@
 | STAT-08 | Phase 2 | Pending |
 | GOAL-01 | Phase 2 | Pending |
 | GOAL-02 | Phase 2 | Pending |
-| CALC-01 | Phase 1 | Pending |
-| CALC-02 | Phase 1 | Pending |
-| CALC-03 | Phase 1 | Pending |
-| CALC-04 | Phase 1 | Pending |
-| CALC-05 | Phase 1 | Pending |
-| CALC-06 | Phase 1 | Pending |
 | RES-01 | Phase 3 | Pending |
 | RES-02 | Phase 3 | Pending |
 | RES-03 | Phase 3 | Pending |
 | RES-04 | Phase 3 | Pending |
 | RES-05 | Phase 3 | Pending |
+| WIZ-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 25 total
