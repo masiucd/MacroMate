@@ -18,6 +18,15 @@ Build the pure calculation library that powers all macro outputs. No UI. Impleme
 - TanStack Start is a full-stack React framework built on TanStack Router; use its latest version
 - The calculation library (`src/lib/`) is framework-agnostic pure functions, but the project scaffolding must be TanStack Start
 
+### Styling (Locked)
+- **Shadcn/ui + Tailwind CSS** — Shadcn components for UI primitives, Tailwind for layout and utilities
+- Shadcn components are copied into the repo, not an npm dependency — fully customizable
+- Do not use plain Tailwind-only components where a Shadcn equivalent exists
+
+### Form Library (Locked)
+- **TanStack Form (latest)** — pairs with TanStack Start; type-safe, headless
+- Do not use React Hook Form or any other form library
+
 ### BMR Formula
 - Use Mifflin-St Jeor (1990), not Harris-Benedict
 - Sex input: Male / Female only (binary) — formula is defined for these two values

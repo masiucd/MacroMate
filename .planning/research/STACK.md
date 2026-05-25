@@ -13,10 +13,13 @@
 **Alternative: Next.js** — not applicable given user's explicit framework choice.
 
 ### Styling
-**Tailwind CSS v3**
-- Mobile-first utility classes are exactly what this needs
-- No runtime CSS-in-JS overhead
-- Confidence: High
+**Shadcn/ui + Tailwind CSS** ⚠️ USER-LOCKED CHOICE
+- Shadcn/ui provides pre-built accessible components (inputs, buttons, selects, cards) that integrate with Tailwind
+- Tailwind CSS for layout and utility styling
+- Shadcn components are copy-pasted into the repo (not a dependency) — fully customizable
+- Confidence: Locked (not a recommendation — user decision)
+
+**Previously considered: Tailwind CSS alone** — superseded by Shadcn + Tailwind decision.
 
 ### State Management
 **React useState / useReducer** (no external library)
@@ -25,10 +28,12 @@
 - Confidence: High
 
 ### Form Handling
-**React Hook Form**
-- Lightweight, performant validation
-- Good mobile UX (controlled inputs without re-render overhead)
-- Confidence: High
+**TanStack Form (latest)** ⚠️ USER-LOCKED CHOICE
+- User explicitly requires TanStack Form — pairs naturally with TanStack Start
+- Type-safe, headless form library with first-class validation
+- Confidence: Locked (not a recommendation — user decision)
+
+**Previously considered: React Hook Form** — superseded by TanStack Form decision.
 
 ### Language
 **TypeScript**
