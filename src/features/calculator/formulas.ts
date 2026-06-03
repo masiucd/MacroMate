@@ -50,12 +50,7 @@ export const cmToFtIn = (cm: number): {ft: number; inches: number} => {
 	return {ft, inches}
 }
 
-export function bmr(input: {
-	sex: Sex
-	weightKg: number
-	heightCm: number
-	age: number
-}): number {
+export function bmr(input: {sex: Sex; weightKg: number; heightCm: number; age: number}): number {
 	const {sex, weightKg, heightCm, age} = input
 	const base = 10 * weightKg + 6.25 * heightCm - 5 * age
 	return base + (sex === "male" ? 5 : -161)
