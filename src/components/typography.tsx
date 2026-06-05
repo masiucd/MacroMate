@@ -4,11 +4,11 @@ import {cn} from "#/lib/utils"
 
 // ─── Heading ──────────────────────────────────────────────────────────────────
 
-const headingVariants = cva("scroll-m-20 font-display text-(--sea-ink) tracking-tight", {
+const headingVariants = cva("scroll-m-20 font-display text-sea-ink tracking-tight", {
 	variants: {
 		size: {
 			h1: "text-balance font-bold text-4xl",
-			h2: "border-(--line) border-b pb-2 font-semibold text-3xl first:mt-0",
+			h2: "border-line border-b pb-2 font-semibold text-3xl first:mt-0",
 			h3: "font-semibold text-2xl",
 			h4: "font-semibold text-xl",
 		},
@@ -43,11 +43,11 @@ export {headingVariants}
 const textVariants = cva("", {
 	variants: {
 		variant: {
-			p: "not-first:mt-3 text-(--sea-ink) leading-7",
-			lead: "text-(--sea-ink-soft) text-xl leading-7",
-			large: "block font-semibold text-(--sea-ink) text-lg",
-			small: "font-medium text-(--sea-ink) text-sm leading-none",
-			muted: "text-(--sea-ink-soft) text-sm",
+			p: "not-first:mt-3 text-sea-ink leading-7",
+			lead: "text-sea-ink-soft text-xl leading-7",
+			large: "block font-semibold text-lg text-sea-ink",
+			small: "font-medium text-sea-ink text-sm leading-none",
+			muted: "text-sea-ink-soft text-sm",
 		},
 	},
 	defaultVariants: {
@@ -98,10 +98,7 @@ export function InlineCode({children, className}: PropsWithChildren<{className?:
 export function Blockquote({children, className}: PropsWithChildren<{className?: string}>) {
 	return (
 		<blockquote
-			className={cn(
-				"mt-6 border-(--lagoon) border-l-2 pl-6 text-(--sea-ink-soft) italic",
-				className,
-			)}
+			className={cn("mt-6 border-lagoon border-l-2 pl-6 text-sea-ink-soft italic", className)}
 		>
 			{children}
 		</blockquote>
@@ -118,8 +115,18 @@ export function Table({children, className}: PropsWithChildren<{className?: stri
 
 export function List({children, className}: PropsWithChildren<{className?: string}>) {
 	return (
-		<ul className={cn("my-6 ml-6 list-none text-(--sea-ink) [&>li]:mt-2", className)}>
+		<ul className={cn("my-6 ml-6 list-none text-sea-ink [&>li]:mt-2", className)}>{children}</ul>
+	)
+}
+
+export function Strong({children, className}: PropsWithChildren<{className?: string}>) {
+	return <strong className={cn("font-semibold text-sea-ink", className)}>{children}</strong>
+}
+
+export function Small({children, className}: PropsWithChildren<{className?: string}>) {
+	return (
+		<small className={cn("font-medium text-sea-ink text-sm leading-none", className)}>
 			{children}
-		</ul>
+		</small>
 	)
 }
