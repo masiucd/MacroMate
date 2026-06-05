@@ -2,24 +2,23 @@
 
 Each step is mergeable on its own. Tick as we go.
 
-## 1. Pure formulas + tests — current
+## 1. Pure formulas + tests — done
 
-- [ ] `src/features/calculator/formulas.ts`
+- [x] `src/features/calculator/formulas.ts`
   - Constants: `ACTIVITY_MULTIPLIERS`, `GOAL_DELTAS`, `DIET_PRESETS`, `KCAL_PER_G`, `BOUNDS`
   - Types: `Sex`, `ActivityLevel`, `Goal`, `DietPreset`, `MacroSplit`
   - Functions: `bmr`, `tdee`, `kcalForGoal`, `splitMacros`, `lbToKg`, `kgToLb`, `ftInToCm`, `cmToFtIn`
-- [ ] `src/features/calculator/formulas.test.ts`
-  - BMR male/female (known reference values)
-  - TDEE per activity level
-  - kcalForGoal per goal
-  - splitMacros: balanced, high-protein, low-carb, keto; feasible + infeasible
-  - Conversions: round-trip kg↔lb, cm↔ft/in
-  - Bounds constants sanity
+- [x] `src/features/calculator/formulas.test.ts` — 28 tests
 
-## 2. Zod schema + per-step picks
+## 2. Zod schema + per-step picks — done
 
-- [ ] `src/features/calculator/schema.ts`
-- [ ] Re-use bounds from `formulas.ts`
+- [x] `src/features/calculator/schema.ts`
+  - Constants: `UNITS`, `SEXES`, `ACTIVITY_LEVELS`, `GOALS`, `DIET_PRESET_VALUES`, `STEP_COUNT`, `STEPS`, `PROTEIN_PER_KG_BOUNDS`, `FAT_PCT_BOUNDS`
+  - Schemas: `formSchema`, `personalStepSchema`, `activityStepSchema`, `goalStepSchema`, `macrosStepSchema`, `stepSchemas` map, `searchSchema` (coerced + `.catch({})`)
+  - Helpers: `validateStep`, `searchToFormValues`
+  - Types: `FormValues`, `SearchValues`, `Unit`, `Step`, `StepWithValidation`
+- [x] `src/features/calculator/schema.test.ts` — 30 tests
+- [x] Re-uses `BOUNDS` from `formulas.ts`
 
 ## 3. Generic wizard primitives
 
