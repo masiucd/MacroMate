@@ -44,7 +44,7 @@ function Home() {
 			{/* ── Hero ── */}
 			<section className="rise-in mx-auto max-w-2xl space-y-6 text-center">
 				<p className="island-kicker">Free · No account needed</p>
-				<h1 className="display-title font-bold text-5xl text-[var(--sea-ink)] leading-tight sm:text-6xl">
+				<h1 className="display-title font-bold text-5xl text-sea-ink leading-tight sm:text-6xl">
 					Know your macros.
 					<br />
 					<span>Fuel your goals.</span>
@@ -78,10 +78,7 @@ function FeatureCards() {
 		<section aria-labelledby="features-heading" className="space-y-8">
 			<div className="space-y-2 text-center">
 				<p className="island-kicker">What's included</p>
-				<h2
-					id="features-heading"
-					className="display-title font-bold text-3xl text-[var(--sea-ink)]"
-				>
+				<h2 id="features-heading" className="display-title font-bold text-3xl text-sea-ink">
 					Everything you need, nothing you don't
 				</h2>
 			</div>
@@ -89,13 +86,13 @@ function FeatureCards() {
 				{FEATURES.map(({icon, title, description}) => (
 					<li
 						key={title}
-						className="feature-card island-shell space-y-3 rounded-xl border border-[var(--line)] p-6 transition-all"
+						className="feature-card island-shell space-y-3 rounded-xl border border-line p-6 transition-all"
 					>
 						<span className="text-3xl" role="img" aria-hidden="true">
 							{icon}
 						</span>
-						<h3 className="font-semibold text-[var(--sea-ink)] text-base">{title}</h3>
-						<p className="text-[var(--sea-ink-soft)] text-sm leading-relaxed">{description}</p>
+						<h3 className="font-semibold text-base text-sea-ink">{title}</h3>
+						<p className="text-sea-ink-soft text-sm leading-relaxed">{description}</p>
 					</li>
 				))}
 			</ul>
