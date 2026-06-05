@@ -9,15 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as How_it_worksRouteImport } from './routes/how_it_works'
 import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as How_it_worksIndexRouteImport } from './routes/how_it_works/index'
 
-const How_it_worksRoute = How_it_worksRouteImport.update({
-  id: '/how_it_works',
-  path: '/how_it_works',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CalculatorRoute = CalculatorRouteImport.update({
   id: '/calculator',
   path: '/calculator',
@@ -28,46 +23,44 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const How_it_worksIndexRoute = How_it_worksIndexRouteImport.update({
+  id: '/how_it_works/',
+  path: '/how_it_works/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calculator': typeof CalculatorRoute
-  '/how_it_works': typeof How_it_worksRoute
+  '/how_it_works/': typeof How_it_worksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calculator': typeof CalculatorRoute
-  '/how_it_works': typeof How_it_worksRoute
+  '/how_it_works': typeof How_it_worksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calculator': typeof CalculatorRoute
-  '/how_it_works': typeof How_it_worksRoute
+  '/how_it_works/': typeof How_it_worksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calculator' | '/how_it_works'
+  fullPaths: '/' | '/calculator' | '/how_it_works/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/calculator' | '/how_it_works'
-  id: '__root__' | '/' | '/calculator' | '/how_it_works'
+  id: '__root__' | '/' | '/calculator' | '/how_it_works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalculatorRoute: typeof CalculatorRoute
-  How_it_worksRoute: typeof How_it_worksRoute
+  How_it_worksIndexRoute: typeof How_it_worksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/how_it_works': {
-      id: '/how_it_works'
-      path: '/how_it_works'
-      fullPath: '/how_it_works'
-      preLoaderRoute: typeof How_it_worksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/calculator': {
       id: '/calculator'
       path: '/calculator'
@@ -82,13 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how_it_works/': {
+      id: '/how_it_works/'
+      path: '/how_it_works'
+      fullPath: '/how_it_works/'
+      preLoaderRoute: typeof How_it_worksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalculatorRoute: CalculatorRoute,
-  How_it_worksRoute: How_it_worksRoute,
+  How_it_worksIndexRoute: How_it_worksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

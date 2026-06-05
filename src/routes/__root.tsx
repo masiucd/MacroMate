@@ -2,6 +2,7 @@ import {TanStackDevtools} from "@tanstack/react-devtools"
 import type {QueryClient} from "@tanstack/react-query"
 import {createRootRouteWithContext, HeadContent, Scripts} from "@tanstack/react-router"
 import {TanStackRouterDevtoolsPanel} from "@tanstack/react-router-devtools"
+import {Heading} from "#/components/typography"
 import {appConfig} from "#/config/app"
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
 import appCss from "../styles.css?url"
@@ -46,7 +47,9 @@ function RootDocument({children}: {children: React.ReactNode}) {
 				<HeadContent />
 			</head>
 			<body>
-				{children}
+				<Header />
+				<main>{children}</main>
+				<Footer />
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
@@ -62,5 +65,45 @@ function RootDocument({children}: {children: React.ReactNode}) {
 				<Scripts />
 			</body>
 		</html>
+	)
+}
+
+function Header() {
+	return (
+		<header>
+			<div className="mx-auto max-w-7xl">
+				<Heading as="h4" className="site-title" data-testid="site-title">
+					{appConfig.name}
+				</Heading>
+				<nav>
+					<ul>
+						<li></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+	)
+}
+
+function Footer() {
+	return (
+		<footer>
+			<div className="mx-auto max-w-7xl">
+				<small>
+					Built by{" "}
+					<a
+						href={appConfig.meta.socialMedia.website.url}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{appConfig.meta.socialMedia.twitter.handle}
+					</a>{" "}
+					· Source on{" "}
+					<a href={appConfig.meta.socialMedia.github.url} target="_blank" rel="noopener noreferrer">
+						GitHub
+					</a>
+				</small>
+			</div>
+		</footer>
 	)
 }

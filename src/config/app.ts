@@ -16,4 +16,8 @@ export const appConfig = {
 			},
 		},
 	},
+	appStyle: {
+		mainColor: "var(--sea-ink)",
+		accentColor: "var(--sea-ink-soft)",
+	},
 } as const
