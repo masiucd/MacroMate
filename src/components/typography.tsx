@@ -2,8 +2,6 @@ import {cva, type VariantProps} from "class-variance-authority"
 import type {ElementType, PropsWithChildren} from "react"
 import {cn} from "#/lib/utils"
 
-// ─── Heading ──────────────────────────────────────────────────────────────────
-
 const headingVariants = cva("scroll-m-20 font-display text-sea-ink tracking-tight", {
 	variants: {
 		size: {
