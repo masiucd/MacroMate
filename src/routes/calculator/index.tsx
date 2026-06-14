@@ -1,5 +1,6 @@
 import {type AnyFieldApi, formOptions, useForm} from "@tanstack/react-form"
 import {createFileRoute} from "@tanstack/react-router"
+import {useState} from "react"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {Input} from "#/components/ui/input"
@@ -19,9 +20,85 @@ export const Route = createFileRoute("/calculator/")({
 	component: RouteComponent,
 })
 
-const opts = formOptions({
-	//
-	// units: ["kg", "lbs"],
+function RouteComponent() {
+	return (
+		<PageWrapper>
+			<div className="mb-10 flex flex-col gap-2">
+				<Heading size="h1">Calculator</Heading>
+				<Text variant="lead">Coming soon..</Text>
+			</div>
+			<MacroWizard />
+		</PageWrapper>
+	)
+}
+
+function FormComponent({page}: {page: "personal_details" | "activity_level" | "goal"}) {
+	if (page === "personal_details") {
+		return <PersonalDetailsForm />
+	} else if (page === "activity_level") {
+		return (
+			<form>
+				<p>Activity level</p>
+			</form>
+		)
+	} else if (page === "goal") {
+		return (
+			<form>
+				<p>Goal</p>
+			</form>
+		)
+	}
+	return null
+}
+
+// TODO: We need to know what form to render depending on what step we are on
+// Step 1 — Personal Details
+// Step 2 — Activity Level
+// Step 3 — Goal
+
+function MacroWizard() {
+	const [page, setPage] = useState<"personal_details" | "activity_level" | "goal">(
+		"personal_details",
+	)
+
+	return (
+		<>
+			<FormComponent page={page} />
+			<div className="flex gap-4">
+				<Button
+					onClick={() => {
+						// TODO validation needs to bee added before going to the next step
+						if (page === "personal_details") {
+							return
+						} else if (page === "activity_level") {
+							setPage("personal_details")
+						} else if (page === "goal") {
+							setPage("activity_level")
+						}
+					}}
+				>
+					Prev
+				</Button>
+				<Button
+					onClick={() => {
+						// TODO validation needs to bee added before going to the next step
+						if (page === "personal_details") {
+							setPage("activity_level")
+						} else if (page === "activity_level") {
+							setPage("goal")
+						} else if (page === "goal") {
+							return
+						}
+					}}
+				>
+					Next
+				</Button>
+			</div>
+		</>
+	)
+}
+
+const personalDetailsOptions = formOptions({
 	defaultValues: {
 		unit: "kg",
 		sex: "female",
@@ -32,21 +109,9 @@ const opts = formOptions({
 	// validators: {},
 })
 
-function RouteComponent() {
-	return (
-		<PageWrapper>
-			<div className="mb-10 flex flex-col gap-2">
-				<Heading size="h1">Calculator</Heading>
-				<Text variant="lead">Coming soon..</Text>
-			</div>
-			<MacroForm />
-		</PageWrapper>
-	)
-}
-
-function MacroForm() {
+function PersonalDetailsForm() {
 	const form = useForm({
-		...opts,
+		...personalDetailsOptions,
 		onSubmit: data => {
 			console.log("submit", data.value)
 		},
@@ -233,27 +298,13 @@ function MacroForm() {
 						)
 					}}
 				/>
-				<div className="flex gap-4">
-					<Button
-						onClick={() => {
-							// if on first page -->
-							// if on second page -->
-						}}
-					>
-						Prev
-					</Button>
-					<Button
-						onClick={() => {
-							// if on first page -->
-							// if on second page -->
-						}}
-					>
-						Next
-					</Button>
-				</div>
 			</form>
 		</fieldset>
 	)
+}
+
+function _PersonalInfoForm() {
+	return <form></form>
 }
 
 // {/*// Fields: `unit`, `sex`, `age`, `weightKg`, `heightCm`.*/}
