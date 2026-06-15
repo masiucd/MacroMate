@@ -32,7 +32,9 @@ function RouteComponent() {
 	)
 }
 
-function FormComponent({page}: {page: "personal_details" | "activity_level" | "goal"}) {
+type Page = "personal_details" | "activity_level" | "goal" | "macros"
+
+function FormComponent({page}: {page: Page}) {
 	if (page === "personal_details") {
 		return <PersonalDetailsForm />
 	} else if (page === "activity_level") {
@@ -51,50 +53,96 @@ function FormComponent({page}: {page: "personal_details" | "activity_level" | "g
 	return null
 }
 
+// TODO: We need to implement validation for each form and only allow going to the next step if the current form is valid
+// Validation functions need to return a boolean indicating whether the form is valid or not
+function _personalDetailsFormIsValid(fields: {
+	unit: string
+	// sex: "male" | "female"
+	age: string
+	weightKg: string
+	heightCm: string
+}) {
+	return Object.values(fields).every(value => {
+		if (typeof value === "string") {
+			return value.trim() !== ""
+		}
+		return true
+	})
+}
+
+function _activityLevelFormIsValid(fields: {activity: string}) {
+	return fields.activity.trim() !== ""
+}
+
+function _goalFormIsValid(field: "cut" | "maintain" | "bulk") {
+	return field.trim() !== "" && ["cut", "maintain", "bulk"].includes(field)
+}
+
 // TODO: We need to know what form to render depending on what step we are on
 // Step 1 — Personal Details
 // Step 2 — Activity Level
 // Step 3 — Goal
+//
 
+const initialPage: Page = "personal_details"
 function MacroWizard() {
-	const [page, setPage] = useState<"personal_details" | "activity_level" | "goal">(
-		"personal_details",
-	)
+	const [page, setPage] = useState<Page>(initialPage)
 
 	return (
 		<>
 			<FormComponent page={page} />
-			<div className="flex gap-4">
-				<Button
-					onClick={() => {
-						// TODO validation needs to bee added before going to the next step
-						if (page === "personal_details") {
-							return
-						} else if (page === "activity_level") {
-							setPage("personal_details")
-						} else if (page === "goal") {
-							setPage("activity_level")
-						}
-					}}
-				>
-					Prev
-				</Button>
-				<Button
-					onClick={() => {
-						// TODO validation needs to bee added before going to the next step
-						if (page === "personal_details") {
-							setPage("activity_level")
-						} else if (page === "activity_level") {
-							setPage("goal")
-						} else if (page === "goal") {
-							return
-						}
-					}}
-				>
-					Next
-				</Button>
-			</div>
+			<NavigationButtons
+				moveForward={() => {
+					if (page === "personal_details") {
+						setPage("activity_level")
+					} else if (page === "activity_level") {
+						setPage("goal")
+					} else if (page === "goal") {
+						setPage("macros")
+					}
+				}}
+				moveBackward={() => {
+					if (page === "personal_details") {
+						return
+					} else if (page === "activity_level") {
+						setPage("personal_details")
+					} else if (page === "goal") {
+						setPage("activity_level")
+					} else if (page === "macros") {
+						setPage("goal")
+					}
+				}}
+			/>
 		</>
+	)
+}
+
+function NavigationButtons({
+	moveForward,
+	moveBackward,
+}: {
+	moveForward: () => void
+	moveBackward: () => void
+}) {
+	return (
+		<div className="flex gap-4">
+			<Button
+				onClick={() => {
+					// TODO validation needs to bee added before going to the next step
+					moveBackward()
+				}}
+			>
+				Prev
+			</Button>
+			<Button
+				onClick={() => {
+					// TODO validation needs to bee added before going to the next step
+					moveForward()
+				}}
+			>
+				Next
+			</Button>
+		</div>
 	)
 }
 
