@@ -15,6 +15,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
+import {ActivityLevelForm} from "./components/forms/activity_level"
+import {GoalForm} from "./components/forms/goal"
+import {MacrosForm} from "./components/forms/macros"
 
 export const Route = createFileRoute("/calculator/")({
 	component: RouteComponent,
@@ -35,47 +38,18 @@ function RouteComponent() {
 type Page = "personal_details" | "activity_level" | "goal" | "macros"
 
 function FormComponent({page}: {page: Page}) {
-	if (page === "personal_details") {
-		return <PersonalDetailsForm />
-	} else if (page === "activity_level") {
-		return (
-			<form>
-				<p>Activity level</p>
-			</form>
-		)
-	} else if (page === "goal") {
-		return (
-			<form>
-				<p>Goal</p>
-			</form>
-		)
+	switch (page) {
+		case "personal_details":
+			return <PersonalDetailsForm />
+		case "activity_level":
+			return <ActivityLevelForm />
+		case "goal":
+			return <GoalForm />
+		case "macros":
+			return <MacrosForm />
+		default:
+			return null
 	}
-	return null
-}
-
-// TODO: We need to implement validation for each form and only allow going to the next step if the current form is valid
-// Validation functions need to return a boolean indicating whether the form is valid or not
-function _personalDetailsFormIsValid(fields: {
-	unit: string
-	// sex: "male" | "female"
-	age: string
-	weightKg: string
-	heightCm: string
-}) {
-	return Object.values(fields).every(value => {
-		if (typeof value === "string") {
-			return value.trim() !== ""
-		}
-		return true
-	})
-}
-
-function _activityLevelFormIsValid(fields: {activity: string}) {
-	return fields.activity.trim() !== ""
-}
-
-function _goalFormIsValid(field: "cut" | "maintain" | "bulk") {
-	return field.trim() !== "" && ["cut", "maintain", "bulk"].includes(field)
 }
 
 // TODO: We need to know what form to render depending on what step we are on
@@ -349,10 +323,6 @@ function PersonalDetailsForm() {
 			</form>
 		</fieldset>
 	)
-}
-
-function _PersonalInfoForm() {
-	return <form></form>
 }
 
 // {/*// Fields: `unit`, `sex`, `age`, `weightKg`, `heightCm`.*/}
