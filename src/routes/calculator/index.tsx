@@ -2,7 +2,7 @@ import {createFileRoute} from "@tanstack/react-router"
 import {useState} from "react"
 import {Heading, Text} from "#/components/typography"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
-import {FormComponent} from "./components/forms/form"
+
 import {NavigationButtons} from "./components/navigation_buttons"
 import type {Page} from "./types"
 
@@ -24,9 +24,21 @@ function RouteComponent() {
 	)
 }
 
+// function _reducer() {
+// 	//
+// }
+
 const initialPage: Page = "personal_details"
 function MacroWizard() {
 	const [page, setPage] = useState<Page>(initialPage)
+	const [_state, _setState] = useState({
+		unit: "kg",
+		sex: "female",
+		age: "",
+		weightKg: "",
+		heightCm: "",
+		//
+	})
 	return (
 		<div className="flex flex-col gap-10 bg-red-300">
 			<FormComponent page={page} />
@@ -58,4 +70,51 @@ function MacroWizard() {
 			</div>
 		</div>
 	)
+}
+
+export function FormComponent({page}: {page: Page}) {
+	const _form = useForm({
+		...formOpts,
+		onSubmit: data => {
+			console.log("submit", data.value)
+		},
+	})
+
+	return (
+		<form>
+			<FormView page={page} />
+			<Button>Save</Button>
+		</form>
+	)
+}
+
+const formOpts = formOptions({
+	defaultValues: {
+		unit: "kg",
+		sex: "female",
+		age: "",
+		weightKg: "",
+		heightCm: "",
+		activity: "",
+		goal: "",
+		preset: "",
+		proteinPerKg: "",
+		fatPct: "",
+	},
+	// validators: {},
+})
+
+function FormView({page}: {page: Page}) {
+	switch (page) {
+		case "personal_details":
+			return <PersonalDetails />
+		case "activity_level":
+			return <ActivityLevel />
+		case "goal":
+			return <Goal />
+		case "macros":
+			return <Macros />
+		default:
+			return null
+	}
 }
