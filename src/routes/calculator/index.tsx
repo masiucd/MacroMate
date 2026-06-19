@@ -1,10 +1,15 @@
 import {createFileRoute} from "@tanstack/react-router"
 import {useState} from "react"
 import {Heading, Text} from "#/components/typography"
+import {Button} from "#/components/ui/button"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
-
+import {ActivityLevel} from "./components/form_views/activity_level"
+import {Goal} from "./components/form_views/goal"
+import {Macros} from "./components/form_views/macros"
+import {PersonalDetails} from "./components/form_views/personal_details"
 import {NavigationButtons} from "./components/navigation_buttons"
-import type {Page} from "./types"
+import {useWizardForm, type WizardForm} from "./form"
+import {type Page, STEP_ORDER} from "./types"
 
 export const Route = createFileRoute("/calculator/")({
 	component: RouteComponent,
@@ -24,97 +29,48 @@ function RouteComponent() {
 	)
 }
 
-// function _reducer() {
-// 	//
-// }
+const initialPage = STEP_ORDER[0]
 
-const initialPage: Page = "personal_details"
 function MacroWizard() {
+	const form = useWizardForm()
 	const [page, setPage] = useState<Page>(initialPage)
-	const [_state, _setState] = useState({
-		unit: "kg",
-		sex: "female",
-		age: "",
-		weightKg: "",
-		heightCm: "",
-		//
-	})
+
+	const stepOrderIndex = STEP_ORDER.indexOf(page)
+	const prev = STEP_ORDER[stepOrderIndex - 1]
+	const next = STEP_ORDER[stepOrderIndex + 1]
+
 	return (
-		<div className="flex flex-col gap-10 bg-red-300">
-			<FormComponent page={page} />
+		<form
+			className="flex flex-col gap-10"
+			onSubmit={e => {
+				e.preventDefault()
+				e.stopPropagation()
+				form.handleSubmit()
+			}}
+		>
+			<StepView page={page} form={form} />
 			<div className="flex gap-4">
 				<NavigationButtons
-					moveForward={() => {
-						if (page === "personal_details") {
-							setPage("activity_level")
-						} else if (page === "activity_level") {
-							setPage("goal")
-						} else if (page === "goal") {
-							setPage("macros")
-						}
-					}}
-					moveBackward={() => {
-						if (page === "personal_details") {
-							return
-						} else if (page === "activity_level") {
-							setPage("personal_details")
-						} else if (page === "goal") {
-							setPage("activity_level")
-						} else if (page === "macros") {
-							setPage("goal")
-						}
-					}}
-					forwardButtonEnabled={page !== "macros"}
-					backwardButtonEnabled={page !== "personal_details"}
+					moveBackward={() => prev && setPage(prev)}
+					moveForward={() => next && setPage(next)}
+					backwardButtonEnabled={prev !== undefined}
+					forwardButtonEnabled={next !== undefined}
 				/>
+				{next === undefined && <Button type="submit">Save</Button>}
 			</div>
-		</div>
-	)
-}
-
-export function FormComponent({page}: {page: Page}) {
-	const _form = useForm({
-		...formOpts,
-		onSubmit: data => {
-			console.log("submit", data.value)
-		},
-	})
-
-	return (
-		<form>
-			<FormView page={page} />
-			<Button>Save</Button>
 		</form>
 	)
 }
 
-const formOpts = formOptions({
-	defaultValues: {
-		unit: "kg",
-		sex: "female",
-		age: "",
-		weightKg: "",
-		heightCm: "",
-		activity: "",
-		goal: "",
-		preset: "",
-		proteinPerKg: "",
-		fatPct: "",
-	},
-	// validators: {},
-})
-
-function FormView({page}: {page: Page}) {
+function StepView({page, form}: {page: Page; form: WizardForm}) {
 	switch (page) {
 		case "personal_details":
-			return <PersonalDetails />
+			return <PersonalDetails form={form} />
 		case "activity_level":
-			return <ActivityLevel />
+			return <ActivityLevel form={form} />
 		case "goal":
-			return <Goal />
+			return <Goal form={form} />
 		case "macros":
-			return <Macros />
-		default:
-			return null
+			return <Macros form={form} />
 	}
 }
