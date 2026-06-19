@@ -1,8 +1,10 @@
+import {useStore} from "@tanstack/react-form"
 import {createFileRoute} from "@tanstack/react-router"
 import {useState} from "react"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
+import {type StepWithValidation, validateStep} from "#/features/calculator/schema"
 import {ActivityLevel} from "./components/form_views/activity_level"
 import {Goal} from "./components/form_views/goal"
 import {Macros} from "./components/form_views/macros"
@@ -29,15 +31,17 @@ function RouteComponent() {
 	)
 }
 
-const initialPage = STEP_ORDER[0]
-
 function MacroWizard() {
 	const form = useWizardForm()
-	const [page, setPage] = useState<Page>(initialPage)
+	const [page, setPage] = useState<Page>(STEP_ORDER[0])
 
-	const stepOrderIndex = STEP_ORDER.indexOf(page)
-	const prev = STEP_ORDER[stepOrderIndex - 1]
-	const next = STEP_ORDER[stepOrderIndex + 1]
+	const stepIndex = STEP_ORDER.indexOf(page)
+	const prevPage = STEP_ORDER[stepIndex - 1]
+	const nextPage = STEP_ORDER[stepIndex + 1]
+
+	const values = useStore(form.store, state => state.values)
+	const stepNumber = (stepIndex + 1) as StepWithValidation
+	const canAdvance = validateStep(stepNumber, values).ok
 
 	return (
 		<form
@@ -51,12 +55,16 @@ function MacroWizard() {
 			<StepView page={page} form={form} />
 			<div className="flex gap-4">
 				<NavigationButtons
-					moveBackward={() => prev && setPage(prev)}
-					moveForward={() => next && setPage(next)}
-					backwardButtonEnabled={prev !== undefined}
-					forwardButtonEnabled={next !== undefined}
+					moveBackward={() => prevPage && setPage(prevPage)}
+					moveForward={() => nextPage && setPage(nextPage)}
+					backwardButtonEnabled={prevPage !== undefined}
+					forwardButtonEnabled={canAdvance && nextPage !== undefined}
 				/>
-				{next === undefined && <Button type="submit">Save</Button>}
+				{!nextPage && (
+					<Button type="submit" disabled={!canAdvance}>
+						Calculate
+					</Button>
+				)}
 			</div>
 		</form>
 	)
