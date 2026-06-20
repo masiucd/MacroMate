@@ -3,15 +3,15 @@ import {Button} from "#/components/ui/button"
 interface NavigationButtonsProps {
 	moveForward: () => void
 	moveBackward: () => void
-	forwardButtonEnabled: boolean
-	backwardButtonEnabled: boolean
+	nextButtonDisabled: boolean
+	prevButtonDisabled: boolean
 }
 
 export function NavigationButtons({
 	moveForward,
 	moveBackward,
-	forwardButtonEnabled,
-	backwardButtonEnabled,
+	nextButtonDisabled,
+	prevButtonDisabled,
 }: NavigationButtonsProps) {
 	return (
 		<>
@@ -19,7 +19,7 @@ export function NavigationButtons({
 				onClick={() => {
 					moveBackward()
 				}}
-				disabled={!backwardButtonEnabled}
+				disabled={prevButtonDisabled}
 			>
 				Prev
 			</Button>
@@ -27,7 +27,7 @@ export function NavigationButtons({
 				onClick={() => {
 					moveForward()
 				}}
-				disabled={!forwardButtonEnabled}
+				disabled={nextButtonDisabled}
 			>
 				Next
 			</Button>
