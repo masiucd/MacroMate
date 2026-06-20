@@ -123,7 +123,7 @@ export type SearchValues = z.infer<typeof searchSchema>
 export function validateStep(
 	step: StepWithValidation,
 	values: Partial<FormValues>,
-): {ok: true; data: Partial<FormValues>} | {ok: false; issues: z.ZodIssue[]} {
+): {ok: true; data: Partial<FormValues>} | {ok: false; issues: z.core.$ZodIssue[]} {
 	const result = stepSchemas[step].safeParse(values)
 	if (result.success) return {ok: true, data: result.data}
 	return {ok: false, issues: result.error.issues}

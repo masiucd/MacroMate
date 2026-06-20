@@ -1,3 +1,4 @@
+import type {z} from "zod"
 import {Input} from "#/components/ui/input"
 import {Label} from "#/components/ui/label"
 import {RadioGroup, RadioGroupItem} from "#/components/ui/radio-group"
@@ -11,11 +12,13 @@ import {
 } from "#/components/ui/select"
 import type {WizardForm} from "../../form"
 import {FieldInfo} from "../field_info"
+import {StepIssues} from "../step_issues"
 
-export function PersonalDetails({form}: {form: WizardForm}) {
+export function PersonalDetails({form, issues}: {form: WizardForm; issues: z.core.$ZodIssue[]}) {
 	return (
 		<div className="flex flex-col gap-2">
-			<div className="flex gap-2">
+			<StepIssues issues={issues} />
+			<div className="mb-2 flex gap-2">
 				<form.Field
 					name="unit"
 					validators={{
@@ -73,7 +76,7 @@ export function PersonalDetails({form}: {form: WizardForm}) {
 					onBlur: ({value}) => (value === undefined ? "Age is required" : undefined),
 				}}
 				children={field => (
-					<div>
+					<div className="flex flex-col gap-2">
 						<Label htmlFor={field.name}>Age</Label>
 						<Input
 							id={field.name}
@@ -98,7 +101,7 @@ export function PersonalDetails({form}: {form: WizardForm}) {
 					onBlur: ({value}) => (value === undefined ? "Weight is required" : undefined),
 				}}
 				children={field => (
-					<div>
+					<div className="flex flex-col gap-2">
 						<Label htmlFor={field.name}>
 							Weight ({form.getFieldValue("unit") === "metric" ? "kg" : "lb"})
 						</Label>
@@ -125,7 +128,7 @@ export function PersonalDetails({form}: {form: WizardForm}) {
 					onBlur: ({value}) => (value === undefined ? "Height is required" : undefined),
 				}}
 				children={field => (
-					<div>
+					<div className="flex flex-col gap-2">
 						<Label htmlFor={field.name}>Height (cm)</Label>
 						<Input
 							id={field.name}

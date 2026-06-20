@@ -1,6 +1,7 @@
 import {useStore} from "@tanstack/react-form"
 import {createFileRoute} from "@tanstack/react-router"
 import {useState} from "react"
+import type {z} from "zod"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
@@ -41,7 +42,9 @@ function MacroWizard() {
 
 	const values = useStore(form.store, state => state.values)
 	const stepNumber = (stepIndex + 1) as StepWithValidation
-	const canAdvance = validateStep(stepNumber, values).ok
+	const result = validateStep(stepNumber, values)
+	const canAdvance = result.ok
+	const issues = result.ok ? [] : result.issues
 
 	return (
 		<form
@@ -52,13 +55,13 @@ function MacroWizard() {
 				form.handleSubmit()
 			}}
 		>
-			<StepView page={page} form={form} />
+			<StepView page={page} form={form} issues={issues} />
 			<div className="flex gap-4">
 				<NavigationButtons
 					moveBackward={() => prevPage && setPage(prevPage)}
 					moveForward={() => nextPage && setPage(nextPage)}
-					backwardButtonEnabled={prevPage !== undefined}
-					forwardButtonEnabled={canAdvance && nextPage !== undefined}
+					prevButtonDisabled={prevPage === undefined}
+					nextButtonDisabled={!canAdvance || nextPage === undefined}
 				/>
 				{!nextPage && (
 					<Button type="submit" disabled={!canAdvance}>
@@ -70,15 +73,23 @@ function MacroWizard() {
 	)
 }
 
-function StepView({page, form}: {page: Page; form: WizardForm}) {
+function StepView({
+	page,
+	form,
+	issues,
+}: {
+	page: Page
+	form: WizardForm
+	issues: z.core.$ZodIssue[]
+}) {
 	switch (page) {
 		case "personal_details":
-			return <PersonalDetails form={form} />
+			return <PersonalDetails form={form} issues={issues} />
 		case "activity_level":
-			return <ActivityLevel form={form} />
+			return <ActivityLevel form={form} issues={issues} />
 		case "goal":
-			return <Goal form={form} />
+			return <Goal form={form} issues={issues} />
 		case "macros":
-			return <Macros form={form} />
+			return <Macros form={form} issues={issues} />
 	}
 }
