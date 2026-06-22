@@ -1,12 +1,12 @@
 import type {z} from "zod"
+import {FieldInfo} from "#/components/field_info"
 import {StatsIcon} from "#/components/icons"
+import {StepIssues} from "#/components/step_issues"
 import {Heading, Text} from "#/components/typography"
 import {Input} from "#/components/ui/input"
 import {Label} from "#/components/ui/label"
 import {cn} from "#/lib/utils"
-import type {WizardForm} from "../../form"
-import {FieldInfo} from "../field_info"
-import {StepIssues} from "../step_issues"
+import type {WizardForm} from "../../routes/calculator/form"
 
 type FieldProps = {form: WizardForm}
 

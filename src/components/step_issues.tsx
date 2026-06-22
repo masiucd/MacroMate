@@ -1,6 +1,7 @@
 import type {z} from "zod"
 import {AlertIcon} from "#/components/icons"
 import {Text} from "#/components/typography"
+import {cn} from "#/lib/utils"
 
 type FieldMeta = {
 	label: string
@@ -59,7 +60,12 @@ function messageFor(issue: z.core.$ZodIssue): string {
 	}
 }
 
-export function StepIssues({issues}: {issues: z.core.$ZodIssue[]}) {
+interface Props {
+	issues: z.core.$ZodIssue[]
+	className?: string
+}
+
+export function StepIssues({issues, className}: Props) {
 	if (issues.length === 0) return null
 
 	const seen = new Set<string>()
@@ -74,7 +80,7 @@ export function StepIssues({issues}: {issues: z.core.$ZodIssue[]}) {
 	return (
 		<output
 			aria-live="polite"
-			className="flex gap-3 rounded-md border border-warning/40 bg-warning/10 p-4"
+			className={cn("flex gap-3 rounded-md border border-warning/40 bg-warning/10 p-4", className)}
 		>
 			<span className="mt-0.5 shrink-0 text-warning">
 				<AlertIcon size={18} />

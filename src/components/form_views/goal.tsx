@@ -1,6 +1,6 @@
 import type {z} from "zod"
-import type {WizardForm} from "../../form"
-import {StepIssues} from "../step_issues"
+import {StepIssues} from "#/components/step_issues"
+import type {WizardForm} from "../../routes/calculator/form"
 
 export function Goal({form: _form, issues}: {form: WizardForm; issues: z.core.$ZodIssue[]}) {
 	return (
