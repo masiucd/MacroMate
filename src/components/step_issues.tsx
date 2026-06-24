@@ -65,8 +65,6 @@ interface Props {
 	className?: string
 }
 
-// TODO need to fix the layout shift when the issues list changes, maybe by using a fixed height container with overflow-y auto
-
 export function StepIssues({issues, className}: Props) {
 	const hasIssues = issues.length > 0
 
@@ -83,7 +81,9 @@ export function StepIssues({issues, className}: Props) {
 		<output
 			aria-live="polite"
 			className={cn(
-				"flex min-h-20 flex-col gap-3 rounded-md border p-3",
+				"flex min-h-20 flex-col gap-3 overflow-hidden rounded-md border p-3",
+				"transition-[height,background-color,border-color] duration-200 ease-out",
+				"motion-reduce:transition-none",
 				hasIssues ? "border-warning/40 bg-warning/10" : "bg-green-400/10",
 				className,
 			)}
@@ -102,17 +102,15 @@ export function StepIssues({issues, className}: Props) {
 					</Text>
 				)}
 			</div>
-			<div className="flex flex-col gap-1">
-				<ul className="flex flex-col gap-0.5">
-					{messages.map(m => (
-						<li key={m.key}>
-							<Text variant="muted" as="span">
-								{m.text}
-							</Text>
-						</li>
-					))}
-				</ul>
-			</div>
+			<ul className="flex flex-col gap-0.5">
+				{messages.map(m => (
+					<li key={m.key}>
+						<Text variant="muted" as="span">
+							{m.text}
+						</Text>
+					</li>
+				))}
+			</ul>
 		</output>
 	)
 }
