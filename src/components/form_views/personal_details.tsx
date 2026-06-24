@@ -6,11 +6,20 @@ import {Heading, Text} from "#/components/typography"
 import {Input} from "#/components/ui/input"
 import {Label} from "#/components/ui/label"
 import {cn} from "#/lib/utils"
+import type {CalculatorSearchParams} from "#/routes/calculator/types"
 import type {WizardForm} from "../../routes/calculator/form"
 
-type FieldProps = {form: WizardForm}
+interface FieldProps {
+	form: WizardForm
+}
 
-export function PersonalDetails({form, issues}: {form: WizardForm; issues: z.core.$ZodIssue[]}) {
+interface Props {
+	searchParams: CalculatorSearchParams
+	form: WizardForm
+	issues: z.core.$ZodIssue[]
+}
+
+export function PersonalDetails({form, issues, searchParams}: Props) {
 	return (
 		<div className="flex flex-col gap-5">
 			<SectionHeader
@@ -19,14 +28,14 @@ export function PersonalDetails({form, issues}: {form: WizardForm; issues: z.cor
 			/>
 
 			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
-				<UnitField form={form} />
+				<UnitField form={form} unit={searchParams.unit} />
 				<Divider />
-				<SexField form={form} />
+				<SexField form={form} sex={searchParams.sex} />
 				<Divider />
 				<div className="grid gap-5 md:max-w-2xl md:grid-cols-3">
-					<AgeField form={form} />
-					<WeightField form={form} />
-					<HeightField form={form} />
+					<AgeField form={form} age={searchParams.age} />
+					<WeightField form={form} weightKg={searchParams.weightKg} />
+					<HeightField form={form} heightCm={searchParams.heightCm} />
 				</div>
 				<StepIssues issues={issues} />
 			</div>
@@ -91,11 +100,13 @@ function Segmented<T extends string>({
 	value,
 	options,
 	onChange,
+	defaultValue,
 }: {
 	name: string
 	value: T | undefined
 	options: SegmentedOption<T>[]
 	onChange: (next: T) => void
+	defaultValue?: T
 }) {
 	return (
 		<fieldset className="inline-flex w-full max-w-md rounded-lg border border-line bg-foam p-1">
@@ -122,6 +133,7 @@ function Segmented<T extends string>({
 							checked={selected}
 							onChange={() => onChange(opt.value)}
 							className="sr-only"
+							defaultValue={defaultValue}
 						/>
 						<span>{opt.label}</span>
 						{opt.hint ? <span className="text-[11px] text-sea-ink-soft">{opt.hint}</span> : null}
@@ -134,7 +146,7 @@ function Segmented<T extends string>({
 
 // ─── Fields ───────────────────────────────────────────────────────────────────
 
-function UnitField({form}: FieldProps) {
+function UnitField({form, unit}: FieldProps & {unit?: "metric" | "imperial"}) {
 	return (
 		<form.Field
 			name="unit"
@@ -149,6 +161,7 @@ function UnitField({form}: FieldProps) {
 							{value: "metric", label: "Metric", hint: "kg · cm"},
 							{value: "imperial", label: "Imperial", hint: "lb · in"},
 						]}
+						defaultValue={unit}
 					/>
 					<FieldInfo field={field} />
 				</FieldShell>
@@ -157,10 +170,11 @@ function UnitField({form}: FieldProps) {
 	)
 }
 
-function SexField({form}: FieldProps) {
+function SexField({form, sex}: FieldProps & {sex?: "female" | "male"}) {
 	return (
 		<form.Field
 			name="sex"
+			defaultValue={sex}
 			children={field => (
 				<FieldShell label="Sex" htmlFor={field.name} hint="Used for BMR calculation">
 					<Segmented
@@ -179,6 +193,17 @@ function SexField({form}: FieldProps) {
 	)
 }
 
+interface NumberFieldProps {
+	id: string
+	value: number | undefined
+	onChange: (next: number | undefined) => void
+	onBlur: () => void
+	placeholder: string
+	suffix?: string
+	inputMode?: "numeric" | "decimal"
+	defaultValue?: string
+}
+
 function NumberField({
 	id,
 	value,
@@ -187,15 +212,8 @@ function NumberField({
 	placeholder,
 	suffix,
 	inputMode = "numeric",
-}: {
-	id: string
-	value: number | undefined
-	onChange: (next: number | undefined) => void
-	onBlur: () => void
-	placeholder: string
-	suffix?: string
-	inputMode?: "numeric" | "decimal"
-}) {
+	defaultValue = "",
+}: NumberFieldProps) {
 	return (
 		<div className="relative">
 			<Input
@@ -210,6 +228,7 @@ function NumberField({
 					onChange(v === "" ? undefined : Number(v))
 				}}
 				className={suffix ? "pr-12" : undefined}
+				defaultValue={defaultValue}
 			/>
 			{suffix ? (
 				<span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sea-ink-soft text-xs">
@@ -220,13 +239,14 @@ function NumberField({
 	)
 }
 
-function AgeField({form}: FieldProps) {
+function AgeField({form, age}: FieldProps & {age?: number}) {
 	return (
 		<form.Field
 			name="age"
 			validators={{
 				onBlur: ({value}) => (value === undefined ? "Age is required" : undefined),
 			}}
+			defaultValue={age}
 			children={field => (
 				<FieldShell label="Age" htmlFor={field.name}>
 					<NumberField
@@ -236,6 +256,7 @@ function AgeField({form}: FieldProps) {
 						onBlur={field.handleBlur}
 						placeholder="e.g. 32"
 						suffix="years"
+						defaultValue={age?.toString()}
 					/>
 					<FieldInfo field={field} />
 				</FieldShell>
@@ -244,7 +265,7 @@ function AgeField({form}: FieldProps) {
 	)
 }
 
-function WeightField({form}: FieldProps) {
+function WeightField({form, weightKg}: FieldProps & {weightKg?: number}) {
 	const unit = form.getFieldValue("unit") === "metric" ? "kg" : "lb"
 	return (
 		<form.Field
@@ -252,6 +273,7 @@ function WeightField({form}: FieldProps) {
 			validators={{
 				onBlur: ({value}) => (value === undefined ? "Weight is required" : undefined),
 			}}
+			defaultValue={weightKg}
 			children={field => (
 				<FieldShell label="Weight" htmlFor={field.name}>
 					<NumberField
@@ -262,6 +284,7 @@ function WeightField({form}: FieldProps) {
 						placeholder={unit === "kg" ? "e.g. 72" : "e.g. 160"}
 						suffix={unit}
 						inputMode="decimal"
+						defaultValue={weightKg?.toString()}
 					/>
 					<FieldInfo field={field} />
 				</FieldShell>
@@ -270,13 +293,14 @@ function WeightField({form}: FieldProps) {
 	)
 }
 
-function HeightField({form}: FieldProps) {
+function HeightField({form, heightCm}: FieldProps & {heightCm?: number}) {
 	return (
 		<form.Field
 			name="heightCm"
 			validators={{
 				onBlur: ({value}) => (value === undefined ? "Height is required" : undefined),
 			}}
+			defaultValue={heightCm}
 			children={field => (
 				<FieldShell label="Height" htmlFor={field.name}>
 					<NumberField
@@ -287,6 +311,7 @@ function HeightField({form}: FieldProps) {
 						placeholder="e.g. 178"
 						suffix="cm"
 						inputMode="decimal"
+						defaultValue={heightCm?.toString()}
 					/>
 					<FieldInfo field={field} />
 				</FieldShell>

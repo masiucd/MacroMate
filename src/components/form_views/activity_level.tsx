@@ -2,6 +2,7 @@ import type {z} from "zod"
 import {ActivityIcon} from "#/components/icons"
 import {Heading, Text} from "#/components/typography"
 import {cn} from "#/lib/utils"
+import type {CalculatorSearchParams} from "#/routes/calculator/types"
 import type {WizardForm} from "../../routes/calculator/form"
 import {FieldInfo} from "../field_info"
 import {StepIssues} from "../step_issues"
@@ -48,7 +49,13 @@ const ACTIVITY_OPTIONS: ActivityOption[] = [
 	},
 ]
 
-export function ActivityLevel({form, issues}: {form: WizardForm; issues: z.core.$ZodIssue[]}) {
+interface Props {
+	searchParams: CalculatorSearchParams
+	form: WizardForm
+	issues: z.core.$ZodIssue[]
+}
+
+export function ActivityLevel({form, issues}: Props) {
 	return (
 		<div className="flex flex-col gap-5">
 			<SectionHeader

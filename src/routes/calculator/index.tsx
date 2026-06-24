@@ -1,7 +1,7 @@
 import {useStore} from "@tanstack/react-form"
 import {createFileRoute, useNavigate} from "@tanstack/react-router"
 import {useState} from "react"
-import z from "zod"
+import type z from "zod"
 import {ActivityLevel} from "#/components/form_views/activity_level"
 import {Goal} from "#/components/form_views/goal"
 import {Macros} from "#/components/form_views/macros"
@@ -10,31 +10,9 @@ import {NavigationButtons} from "#/components/navigation_buttons"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
-import {
-	ACTIVITY_LEVELS,
-	DIET_PRESET_VALUES,
-	GOALS,
-	SEXES,
-	type StepWithValidation,
-	UNITS,
-	validateStep,
-} from "#/features/calculator/schema"
+import {type StepWithValidation, validateStep} from "#/features/calculator/schema"
 import {useWizardForm, type WizardForm} from "./form"
-import {type Page, STEP_ORDER} from "./types"
-
-const calculatorSearchSchema = z.object({
-	page: z.enum(STEP_ORDER).optional().catch(STEP_ORDER[0]),
-	unit: z.enum(UNITS).optional().catch("metric"),
-	sex: z.enum(SEXES).optional().catch("female"),
-	age: z.number().int().min(0).optional().catch(undefined),
-	weightKg: z.number().min(0).optional().catch(undefined),
-	heightCm: z.number().min(0).optional().catch(undefined),
-	activity: z.enum(ACTIVITY_LEVELS).optional().catch(undefined),
-	goal: z.enum(GOALS).optional().catch(undefined),
-	preset: z.enum(DIET_PRESET_VALUES).optional().catch(undefined),
-	proteinPerKg: z.number().min(0).optional().catch(undefined),
-	fatPct: z.number().min(0).max(1).optional().catch(undefined),
-})
+import {type CalculatorSearchParams, calculatorSearchSchema, type Page, STEP_ORDER} from "./types"
 
 export const Route = createFileRoute("/calculator/")({
 	component: RouteComponent,
@@ -44,11 +22,6 @@ export const Route = createFileRoute("/calculator/")({
 })
 
 function RouteComponent() {
-	// TODO now can be used as default values in form inputs, but we need to make sure that the form values are updated when the search params change
-	const search = Route.useSearch()
-
-	console.log("Search --> ", search)
-
 	return (
 		<PageWrapper>
 			<div className="mb-10 flex flex-col gap-2">
@@ -63,6 +36,10 @@ function RouteComponent() {
 }
 
 function MacroWizard() {
+	// TODO now can be used as default values in form inputs, but we need to make sure that the form values are updated when the search params change
+	const search = Route.useSearch()
+
+	console.log("Search --> ", search)
 	const form = useWizardForm()
 	const [page, setPage] = useState<Page>(STEP_ORDER[0])
 
@@ -76,7 +53,7 @@ function MacroWizard() {
 	const canAdvance = result.ok
 	const issues = result.ok ? [] : result.issues
 	const navigate = useNavigate({from: Route.fullPath})
-	console.log("values", values)
+
 	return (
 		<form
 			className="flex flex-col gap-10"
@@ -86,7 +63,7 @@ function MacroWizard() {
 				form.handleSubmit()
 			}}
 		>
-			<StepView page={page} form={form} issues={issues} />
+			<StepView page={page} form={form} issues={issues} searchParams={search} />
 			<div className="flex gap-4">
 				<NavigationButtons
 					moveBackward={() => {
@@ -126,23 +103,22 @@ function MacroWizard() {
 	)
 }
 
-function StepView({
-	page,
-	form,
-	issues,
-}: {
+interface StepViewProps {
 	page: Page
 	form: WizardForm
 	issues: z.core.$ZodIssue[]
-}) {
+	searchParams: CalculatorSearchParams
+}
+
+function StepView({page, form, issues, searchParams}: StepViewProps) {
 	switch (page) {
 		case "personal_details":
-			return <PersonalDetails form={form} issues={issues} />
+			return <PersonalDetails form={form} issues={issues} searchParams={searchParams} />
 		case "activity_level":
-			return <ActivityLevel form={form} issues={issues} />
+			return <ActivityLevel form={form} issues={issues} searchParams={searchParams} />
 		case "goal":
-			return <Goal form={form} issues={issues} />
+			return <Goal form={form} issues={issues} searchParams={searchParams} />
 		case "macros":
-			return <Macros form={form} issues={issues} />
+			return <Macros form={form} issues={issues} searchParams={searchParams} />
 	}
 }

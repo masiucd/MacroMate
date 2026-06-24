@@ -1,8 +1,15 @@
 import type {z} from "zod"
 import {StepIssues} from "#/components/step_issues"
+import type {CalculatorSearchParams} from "#/routes/calculator/types"
 import type {WizardForm} from "../../routes/calculator/form"
 
-export function Goal({form: _form, issues}: {form: WizardForm; issues: z.core.$ZodIssue[]}) {
+interface Props {
+	searchParams: CalculatorSearchParams
+	form: WizardForm
+	issues: z.core.$ZodIssue[]
+}
+
+export function Goal({form: _form, issues}: Props) {
 	return (
 		<div className="flex flex-col gap-2">
 			<StepIssues issues={issues} />
