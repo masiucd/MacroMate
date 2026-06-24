@@ -55,7 +55,7 @@ interface Props {
 	issues: z.core.$ZodIssue[]
 }
 
-export function ActivityLevel({form, issues}: Props) {
+export function ActivityLevel({form, issues, searchParams}: Props) {
 	return (
 		<div className="flex flex-col gap-5">
 			<SectionHeader
@@ -64,7 +64,7 @@ export function ActivityLevel({form, issues}: Props) {
 			/>
 			<StepIssues issues={issues} />
 			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
-				<ActivityField form={form} />
+				<ActivityField form={form} activity={searchParams.activity} />
 			</div>
 		</div>
 	)
@@ -155,10 +155,11 @@ function RadioCards<T extends string>({
 
 // ─── Fields ───────────────────────────────────────────────────────────────────
 
-function ActivityField({form}: FieldProps) {
+function ActivityField({form, activity}: FieldProps & {activity?: ActivityOption["value"]}) {
 	return (
 		<form.Field
 			name="activity"
+			defaultValue={activity}
 			children={field => (
 				<>
 					<RadioCards

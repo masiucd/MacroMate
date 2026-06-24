@@ -1,6 +1,6 @@
 import {useStore} from "@tanstack/react-form"
 import {createFileRoute, useNavigate} from "@tanstack/react-router"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import type z from "zod"
 import {ActivityLevel} from "#/components/form_views/activity_level"
 import {Goal} from "#/components/form_views/goal"
@@ -35,13 +35,47 @@ function RouteComponent() {
 	)
 }
 
-function MacroWizard() {
-	// TODO now can be used as default values in form inputs, but we need to make sure that the form values are updated when the search params change
-	const search = Route.useSearch()
+// Form field keys that mirror search params (excludes `page`, which is wizard
+// navigation state rather than a form value).
+const SYNCED_KEYS = [
+	"unit",
+	"sex",
+	"age",
+	"weightKg",
+	"heightCm",
+	"activity",
+	"goal",
+	"preset",
+	"proteinPerKg",
+	"fatPct",
+] as const
 
-	console.log("Search --> ", search)
+/**
+ * Writes any defined search-param values into the form, skipping keys already
+ * in sync so untouched fields keep their state. Only `undefined`-checked keys
+ * are applied, so partial URLs never clobber existing values.
+ */
+function syncFormFromSearch(form: WizardForm, search: CalculatorSearchParams) {
+	for (const key of SYNCED_KEYS) {
+		const next = search[key]
+		if (next !== undefined && next !== form.getFieldValue(key)) {
+			form.setFieldValue(key, next)
+		}
+	}
+}
+
+function MacroWizard() {
+	const search = Route.useSearch()
 	const form = useWizardForm()
-	const [page, setPage] = useState<Page>(STEP_ORDER[0])
+	const [page, setPage] = useState<Page>(search.page ?? STEP_ORDER[0])
+
+	// `defaultValues` only seed the form at mount, so re-sync whenever search
+	// params change from outside the form (browser back/forward, shared links,
+	// manual URL edits) — otherwise the URL and form drift apart.
+	useEffect(() => {
+		syncFormFromSearch(form, search)
+		if (search.page) setPage(search.page)
+	}, [search, form])
 
 	const stepIndex = STEP_ORDER.indexOf(page)
 	const prevPage = STEP_ORDER[stepIndex - 1]
