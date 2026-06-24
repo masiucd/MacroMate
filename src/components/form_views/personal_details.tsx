@@ -1,3 +1,4 @@
+import type {PropsWithChildren} from "react"
 import type {z} from "zod"
 import {FieldInfo} from "#/components/field_info"
 import {StatsIcon} from "#/components/icons"
@@ -9,16 +10,23 @@ import {cn} from "#/lib/utils"
 import type {CalculatorSearchParams} from "#/routes/calculator/types"
 import type {WizardForm} from "../../routes/calculator/form"
 
+/** Props shared by all field sub-components that need direct form access. */
 interface FieldProps {
 	form: WizardForm
 }
 
+/** Props for the top-level PersonalDetails step. */
 interface Props {
 	searchParams: CalculatorSearchParams
 	form: WizardForm
 	issues: z.core.$ZodIssue[]
 }
 
+/**
+ * Step 1 of the calculator wizard — collects unit system, sex, age, weight,
+ * and height. Validation errors for the whole step are surfaced via
+ * `StepIssues`.
+ */
 export function PersonalDetails({form, issues, searchParams}: Props) {
 	return (
 		<div className="flex flex-col gap-5">
@@ -45,6 +53,7 @@ export function PersonalDetails({form, issues, searchParams}: Props) {
 
 // ─── Layout helpers ────────────────────────────────────────────────────────────
 
+/** Renders a labelled section header with an icon, title, and subtitle. */
 function SectionHeader({title, subtitle}: {title: string; subtitle: string}) {
 	return (
 		<div className="flex items-start gap-3">
@@ -61,21 +70,23 @@ function SectionHeader({title, subtitle}: {title: string; subtitle: string}) {
 	)
 }
 
+/** Full-width horizontal rule used to visually separate form sections. */
 function Divider() {
 	return <div className="h-px w-full bg-line/60" />
 }
 
-function FieldShell({
-	label,
-	htmlFor,
-	hint,
-	children,
-}: {
+/** Props for `FieldShell`, extracted for use with `PropsWithChildren`. */
+interface FieldShellProps {
 	label: string
 	htmlFor?: string
 	hint?: string
-	children: React.ReactNode
-}) {
+}
+
+/**
+ * Wraps a form control with a `<Label>` and an optional inline hint.
+ * Pass `htmlFor` to associate the label with the control's `id`.
+ */
+function FieldShell({label, htmlFor, hint, children}: PropsWithChildren<FieldShellProps>) {
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="flex items-baseline justify-between gap-2">
@@ -91,10 +102,14 @@ function FieldShell({
 	)
 }
 
-// ─── Segmented control ────────────────────────────────────────────────────────
-
+/** A single option rendered inside `Segmented`. */
 type SegmentedOption<T extends string> = {value: T; label: string; hint?: string}
 
+/**
+ * Pill-style radio group that renders a set of mutually exclusive options.
+ * Each option is a styled `<label>` wrapping a visually hidden `<input type="radio">`
+ * to preserve full keyboard and screen-reader accessibility.
+ */
 function Segmented<T extends string>({
 	name,
 	value,
@@ -146,6 +161,11 @@ function Segmented<T extends string>({
 
 // ─── Fields ───────────────────────────────────────────────────────────────────
 
+/**
+ * Lets the user choose between "metric" (kg/cm) and "imperial" (lb/in).
+ * Selection is required; an inline error is shown if the field is left empty.
+ * `unit` from search params is used as the initial default value.
+ */
 function UnitField({form, unit}: FieldProps & {unit?: "metric" | "imperial"}) {
 	return (
 		<form.Field
@@ -170,6 +190,11 @@ function UnitField({form, unit}: FieldProps & {unit?: "metric" | "imperial"}) {
 	)
 }
 
+/**
+ * Biological sex selector (female / male) used as an input to the
+ * Mifflin–St Jeor BMR formula. The hint text makes the purpose explicit to
+ * the user without cluttering the label.
+ */
 function SexField({form, sex}: FieldProps & {sex?: "female" | "male"}) {
 	return (
 		<form.Field
@@ -193,6 +218,7 @@ function SexField({form, sex}: FieldProps & {sex?: "female" | "male"}) {
 	)
 }
 
+/** Props for `NumberField`. */
 interface NumberFieldProps {
 	id: string
 	value: number | undefined
@@ -204,6 +230,14 @@ interface NumberFieldProps {
 	defaultValue?: string
 }
 
+/**
+ * Generic numeric `<Input>` with an optional absolute-positioned unit suffix
+ * (e.g. "kg", "cm", "years"). Converts the raw string value from the DOM
+ * event to `number | undefined` so consumers stay type-safe.
+ *
+ * `inputMode` defaults to `"numeric"` but should be set to `"decimal"` for
+ * fields that accept fractional values (weight, height).
+ */
 function NumberField({
 	id,
 	value,
@@ -239,6 +273,7 @@ function NumberField({
 	)
 }
 
+/** Age input (whole years). Validated on blur — must not be empty. Pre-filled from search params. */
 function AgeField({form, age}: FieldProps & {age?: number}) {
 	return (
 		<form.Field
@@ -265,6 +300,11 @@ function AgeField({form, age}: FieldProps & {age?: number}) {
 	)
 }
 
+/**
+ * Weight input. The suffix and placeholder adapt to the currently selected
+ * unit system ("kg" for metric, "lb" for imperial). Uses `inputMode="decimal"`
+ * to allow fractional values on mobile keyboards.
+ */
 function WeightField({form, weightKg}: FieldProps & {weightKg?: number}) {
 	const unit = form.getFieldValue("unit") === "metric" ? "kg" : "lb"
 	return (
@@ -293,6 +333,10 @@ function WeightField({form, weightKg}: FieldProps & {weightKg?: number}) {
 	)
 }
 
+/**
+ * Height input (stored internally in cm regardless of the display unit).
+ * Uses `inputMode="decimal"` to allow fractional values on mobile keyboards.
+ */
 function HeightField({form, heightCm}: FieldProps & {heightCm?: number}) {
 	return (
 		<form.Field
