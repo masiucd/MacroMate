@@ -17,7 +17,7 @@ export function PersonalDetails({form, issues}: {form: WizardForm; issues: z.cor
 				title="Your stats"
 				subtitle="A few numbers so we can dial in your daily targets."
 			/>
-			<StepIssues issues={issues} />
+
 			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
 				<UnitField form={form} />
 				<Divider />
@@ -28,6 +28,7 @@ export function PersonalDetails({form, issues}: {form: WizardForm; issues: z.cor
 					<WeightField form={form} />
 					<HeightField form={form} />
 				</div>
+				<StepIssues issues={issues} />
 			</div>
 		</div>
 	)

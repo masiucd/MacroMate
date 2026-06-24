@@ -65,8 +65,10 @@ interface Props {
 	className?: string
 }
 
+// TODO need to fix the layout shift when the issues list changes, maybe by using a fixed height container with overflow-y auto
+
 export function StepIssues({issues, className}: Props) {
-	if (issues.length === 0) return null
+	const hasIssues = issues.length > 0
 
 	const seen = new Set<string>()
 	const messages: {key: string; text: string}[] = []
@@ -80,15 +82,27 @@ export function StepIssues({issues, className}: Props) {
 	return (
 		<output
 			aria-live="polite"
-			className={cn("flex gap-3 rounded-md border border-warning/40 bg-warning/10 p-4", className)}
+			className={cn(
+				"flex min-h-20 flex-col gap-3 rounded-md border p-3",
+				hasIssues ? "border-warning/40 bg-warning/10" : "bg-green-400/10",
+				className,
+			)}
 		>
-			<span className="mt-0.5 shrink-0 text-warning">
-				<AlertIcon size={18} />
-			</span>
+			<div className="flex h-10 items-center gap-2">
+				<span className={cn("mt-0.5 shrink-0 text-warning", !hasIssues && "text-green-foreground")}>
+					<AlertIcon size={18} />
+				</span>
+				{hasIssues ? (
+					<Text variant="small" className="text-warning-foreground">
+						Finish this step to continue
+					</Text>
+				) : (
+					<Text variant="small" className="text-green-foreground">
+						All good! You can continue to the next step.
+					</Text>
+				)}
+			</div>
 			<div className="flex flex-col gap-1">
-				<Text variant="small" className="text-warning-foreground">
-					Finish this step to continue
-				</Text>
 				<ul className="flex flex-col gap-0.5">
 					{messages.map(m => (
 						<li key={m.key}>

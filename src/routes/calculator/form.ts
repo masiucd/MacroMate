@@ -20,17 +20,6 @@ export type WizardFormValues = {
 	fatPct: number
 }
 
-// export const personalDetailValues: Pick<
-// 	WizardFormValues,
-// 	"unit" | "sex" | "age" | "weightKg" | "heightCm"
-// > = {
-// 	unit: "metric",
-// 	sex: "female",
-// 	age: undefined,
-// 	weightKg: undefined,
-// 	heightCm: undefined,
-// }
-
 const defaultValues: WizardFormValues = {
 	unit: "metric",
 	sex: "female",
