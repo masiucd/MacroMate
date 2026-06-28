@@ -1,9 +1,6 @@
 import {useStore} from "@tanstack/react-form"
-import type {z} from "zod"
 import {FieldInfo} from "#/components/field_info"
 import {DietIcon} from "#/components/icons"
-import {StepIssues} from "#/components/step_issues"
-import {Heading, Text} from "#/components/typography"
 import {Label} from "#/components/ui/label"
 import {Slider} from "#/components/ui/slider"
 import {DIET_PRESETS} from "#/features/calculator/formulas"
@@ -13,19 +10,18 @@ import {
 	PROTEIN_PER_KG_BOUNDS,
 } from "#/features/calculator/schema"
 import {cn} from "#/lib/utils"
-import type {CalculatorSearchParams} from "#/routes/calculator/types"
-import type {WizardForm} from "../../routes/calculator/form"
+import {
+	Divider,
+	type FieldProps,
+	type RadioCardOption,
+	RadioCards,
+	type StepProps,
+	StepShell,
+} from "./step_primitives"
 
-type FieldProps = {form: WizardForm}
+type PresetValue = (typeof DIET_PRESET_VALUES)[number]
 
-type PresetOption = {
-	value: (typeof DIET_PRESET_VALUES)[number]
-	label: string
-	description: string
-	badge: string
-}
-
-const PRESET_OPTIONS: PresetOption[] = [
+const PRESET_OPTIONS: RadioCardOption<PresetValue>[] = [
 	{
 		value: "balanced",
 		label: "Balanced",
@@ -58,122 +54,25 @@ const PRESET_OPTIONS: PresetOption[] = [
 	},
 ]
 
-interface Props {
-	searchParams: CalculatorSearchParams
-	form: WizardForm
-	issues: z.core.$ZodIssue[]
-}
-
-export function Macros({form, issues, searchParams}: Props) {
+export function Macros({form, issues, searchParams}: StepProps) {
 	return (
-		<div className="flex flex-col gap-5">
-			<SectionHeader
-				title="Macro distribution"
-				subtitle="Choose a diet preset or fine-tune your protein and fat targets."
-			/>
-			<StepIssues issues={issues} />
-			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
-				<PresetField form={form} preset={searchParams.preset} />
-				<Divider />
-				<div className="flex flex-col gap-6">
-					<ProteinSliderField form={form} />
-					<FatSliderField form={form} />
-				</div>
+		<StepShell
+			icon={<DietIcon size={22} />}
+			title="Macro distribution"
+			subtitle="Choose a diet preset or fine-tune your protein and fat targets."
+			issues={issues}
+		>
+			<PresetField form={form} preset={searchParams.preset} />
+			<Divider />
+			<div className="flex flex-col gap-6">
+				<ProteinSliderField form={form} />
+				<FatSliderField form={form} />
 			</div>
-		</div>
+		</StepShell>
 	)
 }
 
-// ─── Layout helpers ───────────────────────────────────────────────────────────
-
-function SectionHeader({title, subtitle}: {title: string; subtitle: string}) {
-	return (
-		<div className="flex items-start gap-3">
-			<span className="mt-1 shrink-0 text-lagoon-deep">
-				<DietIcon size={22} />
-			</span>
-			<div className="flex flex-col gap-1">
-				<Heading as="h3" size="h3">
-					{title}
-				</Heading>
-				<Text variant="muted">{subtitle}</Text>
-			</div>
-		</div>
-	)
-}
-
-function Divider() {
-	return <div className="h-px w-full bg-line/60" />
-}
-
-// ─── Radio cards ──────────────────────────────────────────────────────────────
-
-function RadioCards<T extends string>({
-	name,
-	value,
-	options,
-	onChange,
-}: {
-	name: string
-	value: T | undefined
-	options: {value: T; label: string; description: string; badge: string}[]
-	onChange: (next: T) => void
-}) {
-	return (
-		<fieldset className="flex flex-col gap-2">
-			{options.map(opt => {
-				const selected = opt.value === value
-				const id = `${name}-${opt.value}`
-				return (
-					<label
-						key={opt.value}
-						htmlFor={id}
-						className={cn(
-							"flex cursor-pointer items-center justify-between gap-4 rounded-lg border px-4 py-3 transition-colors",
-							"has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-lagoon",
-							selected
-								? "border-lagoon bg-lagoon/5 text-sea-ink"
-								: "border-line bg-foam text-sea-ink-soft hover:border-lagoon/50 hover:text-sea-ink",
-						)}
-					>
-						<input
-							id={id}
-							type="radio"
-							name={name}
-							value={opt.value}
-							checked={selected}
-							onChange={() => onChange(opt.value)}
-							className="sr-only"
-						/>
-						<div className="flex flex-col gap-0.5">
-							<span
-								className={cn(
-									"font-medium text-sm",
-									selected ? "text-sea-ink" : "text-sea-ink-soft",
-								)}
-							>
-								{opt.label}
-							</span>
-							<span className="text-sea-ink-soft text-xs">{opt.description}</span>
-						</div>
-						<span
-							className={cn(
-								"shrink-0 font-mono text-xs",
-								selected ? "font-semibold text-palm" : "text-sea-ink-soft",
-							)}
-						>
-							{opt.badge}
-						</span>
-					</label>
-				)
-			})}
-		</fieldset>
-	)
-}
-
-// ─── Fields ───────────────────────────────────────────────────────────────────
-
-function PresetField({form, preset}: FieldProps & {preset?: PresetOption["value"]}) {
+function PresetField({form, preset}: FieldProps & {preset?: PresetValue}) {
 	return (
 		<form.Field
 			name="preset"

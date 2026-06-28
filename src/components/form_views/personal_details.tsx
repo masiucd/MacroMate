@@ -1,79 +1,39 @@
 import type {PropsWithChildren} from "react"
-import type {z} from "zod"
 import {FieldInfo} from "#/components/field_info"
 import {StatsIcon} from "#/components/icons"
-import {StepIssues} from "#/components/step_issues"
-import {Heading, Text} from "#/components/typography"
+import {Text} from "#/components/typography"
 import {Input} from "#/components/ui/input"
 import {Label} from "#/components/ui/label"
 import {cn} from "#/lib/utils"
-import type {CalculatorSearchParams} from "#/routes/calculator/types"
-import type {WizardForm} from "../../routes/calculator/form"
-
-/** Props shared by all field sub-components that need direct form access. */
-interface FieldProps {
-	form: WizardForm
-}
-
-/** Props for the top-level PersonalDetails step. */
-interface Props {
-	searchParams: CalculatorSearchParams
-	form: WizardForm
-	issues: z.core.$ZodIssue[]
-}
+import {Divider, type FieldProps, type StepProps, StepShell} from "./step_primitives"
 
 /**
  * Step 1 of the calculator wizard — collects unit system, sex, age, weight,
  * and height. Validation errors for the whole step are surfaced via
- * `StepIssues`.
+ * `StepShell`.
  */
-export function PersonalDetails({form, issues, searchParams}: Props) {
+export function PersonalDetails({form, issues, searchParams}: StepProps) {
 	return (
-		<div className="flex flex-col gap-5">
-			<SectionHeader
-				title="Your stats"
-				subtitle="A few numbers so we can dial in your daily targets."
-			/>
-
-			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
-				<UnitField form={form} unit={searchParams.unit} />
-				<Divider />
-				<SexField form={form} sex={searchParams.sex} />
-				<Divider />
-				<div className="grid gap-5 md:max-w-2xl md:grid-cols-3">
-					<AgeField form={form} age={searchParams.age} />
-					<WeightField form={form} weightKg={searchParams.weightKg} />
-					<HeightField form={form} heightCm={searchParams.heightCm} />
-				</div>
-				<StepIssues issues={issues} />
+		<StepShell
+			icon={<StatsIcon size={22} />}
+			title="Your stats"
+			subtitle="A few numbers so we can dial in your daily targets."
+			issues={issues}
+		>
+			<UnitField form={form} unit={searchParams.unit} />
+			<Divider />
+			<SexField form={form} sex={searchParams.sex} />
+			<Divider />
+			<div className="grid gap-5 md:max-w-2xl md:grid-cols-3">
+				<AgeField form={form} age={searchParams.age} />
+				<WeightField form={form} weightKg={searchParams.weightKg} />
+				<HeightField form={form} heightCm={searchParams.heightCm} />
 			</div>
-		</div>
+		</StepShell>
 	)
 }
 
 // ─── Layout helpers ────────────────────────────────────────────────────────────
-
-/** Renders a labelled section header with an icon, title, and subtitle. */
-function SectionHeader({title, subtitle}: {title: string; subtitle: string}) {
-	return (
-		<div className="flex items-start gap-3">
-			<span className="mt-1 shrink-0 text-lagoon-deep">
-				<StatsIcon size={22} />
-			</span>
-			<div className="flex flex-col gap-1">
-				<Heading as="h3" size="h3">
-					{title}
-				</Heading>
-				<Text variant="muted">{subtitle}</Text>
-			</div>
-		</div>
-	)
-}
-
-/** Full-width horizontal rule used to visually separate form sections. */
-function Divider() {
-	return <div className="h-px w-full bg-line/60" />
-}
 
 /** Props for `FieldShell`, extracted for use with `PropsWithChildren`. */
 interface FieldShellProps {
