@@ -66,7 +66,8 @@ function syncFormFromSearch(form: WizardForm, search: CalculatorSearchParams) {
 
 function MacroWizard() {
 	const search = Route.useSearch()
-	const form = useWizardForm()
+	const {page: _page, ...searchValues} = search
+	const form = useWizardForm(searchValues)
 	const [page, setPage] = useState<Page>(search.page ?? STEP_ORDER[0])
 
 	// `defaultValues` only seed the form at mount, so re-sync whenever search

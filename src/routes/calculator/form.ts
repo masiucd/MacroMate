@@ -36,9 +36,16 @@ const defaultValues: WizardFormValues = {
 
 export const formOpts = formOptions({defaultValues})
 
-export function useWizardForm() {
+export function useWizardForm(initialValues?: Partial<WizardFormValues>) {
+	const mergedDefaults: WizardFormValues = initialValues
+		? ({
+				...defaultValues,
+				...Object.fromEntries(Object.entries(initialValues).filter(([, v]) => v !== undefined)),
+			} as WizardFormValues)
+		: defaultValues
+
 	return useForm({
-		...formOpts,
+		defaultValues: mergedDefaults,
 		onSubmit: ({value}) => {
 			// TODO: wire to results step
 			console.log("Value", value)
