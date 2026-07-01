@@ -1,42 +1,10 @@
 import {createFileRoute, Link} from "@tanstack/react-router"
+
 import {Button} from "#/components/ui/button"
+import {FEATURES, STEPS, type StepItem} from "#/config"
 import {appConfig} from "#/config/app"
 
 export const Route = createFileRoute("/")({component: Home})
-
-const FEATURES = [
-	{
-		icon: "🔥",
-		title: "BMR & TDEE",
-		description:
-			"Calculates your Basal Metabolic Rate and Total Daily Energy Expenditure using the Mifflin-St Jeor formula, adjusted for your activity level.",
-	},
-	{
-		icon: "🎯",
-		title: "Goal-based calories",
-		description:
-			"Whether you're cutting, maintaining, or bulking, get a precise daily calorie target tailored to your goal.",
-	},
-	{
-		icon: "🥗",
-		title: "Macro splits",
-		description:
-			"Choose from Balanced, High-Protein, Low-Carb, or Keto diet presets and get your exact protein, carbs, and fat targets in grams.",
-	},
-	{
-		icon: "📐",
-		title: "Any unit system",
-		description:
-			"Enter your stats in metric (kg / cm) or imperial (lb / ft+in) — MacroMate converts everything behind the scenes.",
-	},
-] as const
-
-const STEPS = [
-	{number: "01", label: "Enter your stats", detail: "Age, sex, weight & height"},
-	{number: "02", label: "Pick your activity", detail: "Sedentary to extra-active"},
-	{number: "03", label: "Set your goal", detail: "Cut · Maintain · Bulk"},
-	{number: "04", label: "Choose a diet preset", detail: "Balanced, High-Protein, Low-Carb or Keto"},
-] as const
 
 function Home() {
 	return (
@@ -83,20 +51,23 @@ function FeatureCards() {
 				</h2>
 			</div>
 			<ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
-				{FEATURES.map(({icon, title, description}) => (
-					<li
-						key={title}
-						className="feature-card island-shell space-y-3 rounded-xl border border-line p-6 transition-all"
-					>
-						<span className="text-3xl" role="img" aria-hidden="true">
-							{icon}
-						</span>
-						<h3 className="font-semibold text-base text-sea-ink">{title}</h3>
-						<p className="text-sea-ink-soft text-sm leading-relaxed">{description}</p>
-					</li>
+				{FEATURES.map(f => (
+					<FeatureListItem key={f.title} feature={f} />
 				))}
 			</ul>
 		</section>
+	)
+}
+
+function FeatureListItem({feature}: {feature: (typeof FEATURES)[number]}) {
+	return (
+		<li className="feature-card island-shell space-y-3 rounded-xl border border-line p-6 transition-all">
+			<span className="text-3xl" role="img" aria-hidden="true">
+				{feature.icon}
+			</span>
+			<h3 className="font-semibold text-base text-sea-ink">{feature.title}</h3>
+			<p className="text-sea-ink-soft text-sm leading-relaxed">{feature.description}</p>
+		</li>
 	)
 }
 
@@ -131,12 +102,8 @@ function HowItWorks() {
 				</h2>
 			</div>
 			<ol className="m-0 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
-				{STEPS.map(({number, label, detail}) => (
-					<li key={number} className="space-y-2">
-						<span className="display-title font-bold text-4xl">{number}</span>
-						<p className="font-semibold text-sm">{label}</p>
-						<p className="text-xs">{detail}</p>
-					</li>
+				{STEPS.map(step => (
+					<ListStepItem key={step.number} step={step} />
 				))}
 			</ol>
 			<div className="pt-5 text-center">
@@ -145,5 +112,15 @@ function HowItWorks() {
 				</Button>
 			</div>
 		</section>
+	)
+}
+
+function ListStepItem({step}: {step: StepItem}) {
+	return (
+		<li className="space-y-2">
+			<span className="display-title font-bold text-4xl">{step.number}</span>
+			<p className="font-semibold text-sm">{step.label}</p>
+			<p className="text-xs">{step.detail}</p>
+		</li>
 	)
 }
