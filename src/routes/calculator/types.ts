@@ -7,7 +7,13 @@ import {
 	UNITS,
 } from "#/features/calculator/schema"
 
-export const STEP_ORDER = ["personal_details", "activity_level", "goal", "macros"] as const
+export const STEP_ORDER = [
+	"personal_details",
+	"activity_level",
+	"goal",
+	"macros",
+	"result",
+] as const
 
 export type Page = (typeof STEP_ORDER)[number]
 
