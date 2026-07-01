@@ -6,6 +6,7 @@ import {ActivityLevel} from "#/components/form_views/activity_level"
 import {Goal} from "#/components/form_views/goal"
 import {Macros} from "#/components/form_views/macros"
 import {PersonalDetails} from "#/components/form_views/personal_details"
+import {Result} from "#/components/form_views/result"
 import {NavigationButtons} from "#/components/navigation_buttons"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
@@ -89,9 +90,11 @@ function MacroWizard() {
 	const issues = result.ok ? [] : result.issues
 	const navigate = useNavigate({from: Route.fullPath})
 
+	console.log("nextPage", nextPage)
+
 	return (
 		<form
-			className="flex flex-col gap-10"
+			className="flex flex-col gap-10 rounded-xl border border-line bg-surface p-5 md:p-6"
 			onSubmit={e => {
 				e.preventDefault()
 				e.stopPropagation()
@@ -128,11 +131,10 @@ function MacroWizard() {
 					prevButtonDisabled={prevPage === undefined}
 					nextButtonDisabled={!canAdvance || nextPage === undefined}
 				/>
-				{!nextPage && (
-					<Button type="submit" disabled={!canAdvance}>
-						Calculate
-					</Button>
-				)}
+
+				<Button type="submit" disabled={!canAdvance}>
+					Calculate
+				</Button>
 			</div>
 		</form>
 	)
@@ -155,5 +157,10 @@ function StepView({page, form, issues, searchParams}: StepViewProps) {
 			return <Goal form={form} issues={issues} searchParams={searchParams} />
 		case "macros":
 			return <Macros form={form} issues={issues} searchParams={searchParams} />
+		case "result":
+			// TODO need to work on the result view
+			return <Result form={form} issues={issues} searchParams={searchParams} />
+		default:
+			throw new Error(`Unknown page: ${page}`)
 	}
 }

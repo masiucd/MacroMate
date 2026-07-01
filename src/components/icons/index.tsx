@@ -1,4 +1,12 @@
-import {CircleAlert, ClipboardList, Dumbbell, type LucideProps, Salad, Target} from "lucide-react"
+import {
+	CircleAlert,
+	ClipboardList,
+	Dumbbell,
+	ListCheck,
+	type LucideProps,
+	Salad,
+	Target,
+} from "lucide-react"
 import type {ComponentType} from "react"
 
 type IconProps = Pick<LucideProps, "size" | "className">
@@ -23,3 +31,6 @@ export const DietIcon = createIcon(Salad)
 
 /** Inline alert/warning indicator. */
 export const AlertIcon = createIcon(CircleAlert)
+
+/** Inline checkmark indicator. */
+export const CheckIcon = createIcon(ListCheck)

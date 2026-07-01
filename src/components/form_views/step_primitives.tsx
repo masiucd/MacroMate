@@ -39,9 +39,7 @@ export function StepShell({
 		<div className="flex flex-col gap-5">
 			<SectionHeader icon={icon} title={title} subtitle={subtitle} />
 			<StepIssues issues={issues} />
-			<div className="flex flex-col gap-6 rounded-xl border border-line bg-surface p-5 md:p-6">
-				{children}
-			</div>
+			<div className="flex flex-col gap-6">{children}</div>
 		</div>
 	)
 }
