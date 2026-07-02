@@ -2,9 +2,9 @@ import type {PropsWithChildren, ReactNode} from "react"
 import type {z} from "zod"
 import {StepIssues} from "#/components/step_issues"
 import {Heading, Text} from "#/components/typography"
+import type {WizardForm} from "#/features/calculator/form"
+import type {CalculatorSearchParams} from "#/features/calculator/types"
 import {cn} from "#/lib/utils"
-import type {CalculatorSearchParams} from "#/routes/calculator/types"
-import type {WizardForm} from "../../routes/calculator/form"
 
 /** Props shared by all field sub-components that need direct form access. */
 export interface FieldProps {

@@ -11,9 +11,14 @@ import {NavigationButtons} from "#/components/navigation_buttons"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
+import {useWizardForm, type WizardForm} from "#/features/calculator/form"
 import {type StepWithValidation, validateStep} from "#/features/calculator/schema"
-import {useWizardForm, type WizardForm} from "./form"
-import {type CalculatorSearchParams, calculatorSearchSchema, type Page, STEP_ORDER} from "./types"
+import {
+	type CalculatorSearchParams,
+	calculatorSearchSchema,
+	type Page,
+	STEP_ORDER,
+} from "#/features/calculator/types"
 
 export const Route = createFileRoute("/calculator/")({
 	component: RouteComponent,
@@ -92,6 +97,8 @@ function MacroWizard() {
 
 	console.log("nextPage", nextPage)
 
+	const calculateButtonEnabled = page === "result"
+
 	return (
 		<form
 			className="flex flex-col gap-10 rounded-xl border border-line bg-surface p-5 md:p-6"
@@ -132,7 +139,7 @@ function MacroWizard() {
 					nextButtonDisabled={!canAdvance || nextPage === undefined}
 				/>
 
-				<Button type="submit" disabled={!canAdvance}>
+				<Button type="submit" disabled={!calculateButtonEnabled}>
 					Calculate
 				</Button>
 			</div>
