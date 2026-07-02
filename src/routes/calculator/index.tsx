@@ -10,6 +10,7 @@ import {Result} from "#/components/form_views/result"
 import {NavigationButtons} from "#/components/navigation_buttons"
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
+import {ErrorBoundary} from "#/components/wrappers/error_boundary"
 import {PageWrapper} from "#/components/wrappers/page_wrapper"
 import {useWizardForm, type WizardForm} from "#/features/calculator/form"
 import {type StepWithValidation, validateStep} from "#/features/calculator/schema"
@@ -36,7 +37,9 @@ function RouteComponent() {
 					Calculate your macros based on your personal details, activity level and goals.
 				</Text>
 			</div>
-			<MacroWizard />
+			<ErrorBoundary>
+				<MacroWizard />
+			</ErrorBoundary>
 		</PageWrapper>
 	)
 }
@@ -89,8 +92,11 @@ function MacroWizard() {
 	const nextPage = STEP_ORDER[stepIndex + 1]
 
 	const values = useStore(form.store, state => state.values)
-	const stepNumber = (stepIndex + 1) as StepWithValidation
-	const result = validateStep(stepNumber, values)
+	const stepNumber = stepIndex + 1
+	const isFormStep = stepNumber <= 4
+	const result = isFormStep
+		? validateStep(stepNumber as StepWithValidation, values)
+		: ({ok: true, data: values} as const)
 	const canAdvance = result.ok
 	const issues = result.ok ? [] : result.issues
 	const navigate = useNavigate({from: Route.fullPath})
