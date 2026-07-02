@@ -6,6 +6,7 @@ import {ActivityLevel} from "#/components/form_views/activity_level"
 import {Goal} from "#/components/form_views/goal"
 import {Macros} from "#/components/form_views/macros"
 import {PersonalDetails} from "#/components/form_views/personal_details"
+import {Preview} from "#/components/form_views/preview"
 import {Result} from "#/components/form_views/result"
 import {NavigationButtons} from "#/components/navigation_buttons"
 import {Heading, Text} from "#/components/typography"
@@ -94,6 +95,8 @@ function MacroWizard() {
 	const values = useStore(form.store, state => state.values)
 	const stepNumber = stepIndex + 1
 	const isFormStep = stepNumber <= 4
+	// TODO can we make the result cleaner and more readable? maybe a helper function that returns {ok, issues} or {ok, data} based on the step number and values
+	// Two views does not require any form field validation , preview and result views are just displaying the data, so we only need to validate the first 4 steps
 	const result = isFormStep
 		? validateStep(stepNumber as StepWithValidation, values)
 		: ({ok: true, data: values} as const)
@@ -103,7 +106,7 @@ function MacroWizard() {
 
 	console.log("nextPage", nextPage)
 
-	const calculateButtonEnabled = page === "result"
+	const calculateButtonEnabled = page === "preview"
 
 	return (
 		<form
@@ -141,8 +144,8 @@ function MacroWizard() {
 							})
 						}
 					}}
-					prevButtonDisabled={prevPage === undefined}
-					nextButtonDisabled={!canAdvance || nextPage === undefined}
+					prevButtonDisabled={!prevPage}
+					nextButtonDisabled={page === "preview" || !canAdvance || !nextPage}
 				/>
 
 				<Button type="submit" disabled={!calculateButtonEnabled}>
@@ -170,8 +173,11 @@ function StepView({page, form, issues, searchParams}: StepViewProps) {
 			return <Goal form={form} issues={issues} searchParams={searchParams} />
 		case "macros":
 			return <Macros form={form} issues={issues} searchParams={searchParams} />
+		case "preview":
+			return <Preview form={form} issues={issues} searchParams={searchParams} />
 		case "result":
 			// TODO need to work on the result view
+			// do we need the form here? maybe not, but we need the search params to display the results
 			return <Result form={form} issues={issues} searchParams={searchParams} />
 		default:
 			throw new Error(`Unknown page: ${page}`)

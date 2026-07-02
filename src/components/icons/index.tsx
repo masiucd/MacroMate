@@ -2,6 +2,7 @@ import {
 	CircleAlert,
 	ClipboardList,
 	Dumbbell,
+	Eye,
 	ListCheck,
 	type LucideProps,
 	Salad,
@@ -34,3 +35,6 @@ export const AlertIcon = createIcon(CircleAlert)
 
 /** Inline checkmark indicator. */
 export const CheckIcon = createIcon(ListCheck)
+
+/** Inline eye/visibility indicator. */
+export const EyeIcon = createIcon(Eye)
