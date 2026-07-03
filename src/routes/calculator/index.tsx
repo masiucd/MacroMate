@@ -77,8 +77,12 @@ function syncFormFromSearch(form: WizardForm, search: CalculatorSearchParams) {
 function MacroWizard() {
 	const search = Route.useSearch()
 	const {page: _page, ...searchValues} = search
-	const form = useWizardForm(searchValues)
 	const [page, setPage] = useState<Page>(search.page ?? STEP_ORDER[0])
+	const navigate = useNavigate({from: Route.fullPath})
+	const form = useWizardForm(searchValues, values => {
+		setPage("result")
+		navigate({search: prev => ({...prev, ...values, page: "result"})})
+	})
 
 	// `defaultValues` only seed the form at mount, so re-sync whenever search
 	// params change from outside the form (browser back/forward, shared links,
@@ -102,9 +106,9 @@ function MacroWizard() {
 		: ({ok: true, data: values} as const)
 	const canAdvance = result.ok
 	const issues = result.ok ? [] : result.issues
-	const navigate = useNavigate({from: Route.fullPath})
 
 	console.log("nextPage", nextPage)
+	console.log("prevPage", prevPage)
 
 	const calculateButtonEnabled = page === "preview"
 
@@ -122,6 +126,8 @@ function MacroWizard() {
 				<NavigationButtons
 					moveBackward={() => {
 						if (prevPage) {
+							console.log("asdasd", prevPage)
+
 							setPage(prevPage)
 							navigate({
 								search: prev => ({

@@ -12,6 +12,7 @@ export const STEP_ORDER = [
 	"activity_level",
 	"goal",
 	"macros",
+	"preview",
 	"result",
 ] as const
 

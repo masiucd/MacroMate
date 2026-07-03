@@ -16,6 +16,7 @@ export function NavigationButtons({
 	return (
 		<>
 			<Button
+				type="button"
 				onClick={() => {
 					moveBackward()
 				}}
@@ -24,6 +25,7 @@ export function NavigationButtons({
 				Prev
 			</Button>
 			<Button
+				type="button"
 				onClick={() => {
 					moveForward()
 				}}
