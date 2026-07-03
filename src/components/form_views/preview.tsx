@@ -77,7 +77,7 @@ const PRESET_INFO: Record<string, {label: string; description: string; badge: st
 
 // ─── Preview ──────────────────────────────────────────────────────────────────
 
-export function Preview({issues, searchParams}: StepProps) {
+export function Preview({issues, searchParams}: Pick<StepProps, "issues" | "searchParams">) {
 	const weightUnit = searchParams.unit === "imperial" ? "lb" : "kg"
 
 	return (

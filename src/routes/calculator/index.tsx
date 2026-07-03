@@ -180,11 +180,11 @@ function StepView({page, form, issues, searchParams}: StepViewProps) {
 		case "macros":
 			return <Macros form={form} issues={issues} searchParams={searchParams} />
 		case "preview":
-			return <Preview form={form} issues={issues} searchParams={searchParams} />
+			return <Preview issues={issues} searchParams={searchParams} />
 		case "result":
 			// TODO need to work on the result view
 			// do we need the form here? maybe not, but we need the search params to display the results
-			return <Result form={form} issues={issues} searchParams={searchParams} />
+			return <Result issues={issues} searchParams={searchParams} />
 		default:
 			throw new Error(`Unknown page: ${page}`)
 	}

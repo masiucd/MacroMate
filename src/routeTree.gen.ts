@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Preview_macrosIndexRouteImport } from './routes/preview_macros/index'
 import { Route as How_it_worksIndexRouteImport } from './routes/how_it_works/index'
 import { Route as CalculatorIndexRouteImport } from './routes/calculator/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Preview_macrosIndexRoute = Preview_macrosIndexRouteImport.update({
+  id: '/preview_macros/',
+  path: '/preview_macros/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const How_it_worksIndexRoute = How_it_worksIndexRouteImport.update({
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calculator/': typeof CalculatorIndexRoute
   '/how_it_works/': typeof How_it_worksIndexRoute
+  '/preview_macros/': typeof Preview_macrosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calculator': typeof CalculatorIndexRoute
   '/how_it_works': typeof How_it_worksIndexRoute
+  '/preview_macros': typeof Preview_macrosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calculator/': typeof CalculatorIndexRoute
   '/how_it_works/': typeof How_it_worksIndexRoute
+  '/preview_macros/': typeof Preview_macrosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calculator/' | '/how_it_works/'
+  fullPaths: '/' | '/calculator/' | '/how_it_works/' | '/preview_macros/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calculator' | '/how_it_works'
-  id: '__root__' | '/' | '/calculator/' | '/how_it_works/'
+  to: '/' | '/calculator' | '/how_it_works' | '/preview_macros'
+  id: '__root__' | '/' | '/calculator/' | '/how_it_works/' | '/preview_macros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalculatorIndexRoute: typeof CalculatorIndexRoute
   How_it_worksIndexRoute: typeof How_it_worksIndexRoute
+  Preview_macrosIndexRoute: typeof Preview_macrosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preview_macros/': {
+      id: '/preview_macros/'
+      path: '/preview_macros'
+      fullPath: '/preview_macros/'
+      preLoaderRoute: typeof Preview_macrosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/how_it_works/': {
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalculatorIndexRoute: CalculatorIndexRoute,
   How_it_worksIndexRoute: How_it_worksIndexRoute,
+  Preview_macrosIndexRoute: Preview_macrosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

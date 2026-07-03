@@ -1,8 +1,10 @@
 import {
 	CircleAlert,
 	ClipboardList,
+	Copy,
 	Dumbbell,
 	Eye,
+	Link2,
 	ListCheck,
 	type LucideProps,
 	Salad,
@@ -38,3 +40,9 @@ export const CheckIcon = createIcon(ListCheck)
 
 /** Inline eye/visibility indicator. */
 export const EyeIcon = createIcon(Eye)
+
+/** Copy to clipboard. */
+export const CopyIcon = createIcon(Copy)
+
+/** Copy shareable link. */
+export const LinkIcon = createIcon(Link2)
