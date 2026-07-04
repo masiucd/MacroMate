@@ -126,8 +126,6 @@ function MacroWizard() {
 				<NavigationButtons
 					moveBackward={() => {
 						if (prevPage) {
-							console.log("asdasd", prevPage)
-
 							setPage(prevPage)
 							navigate({
 								search: prev => ({

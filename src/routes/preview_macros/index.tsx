@@ -1,11 +1,13 @@
 import {createFileRoute} from "@tanstack/react-router"
+import {formSchema} from "#/features/calculator/schema"
 
 // TODO, validate search params and redirect to /calculator if invalid
 export const Route = createFileRoute("/preview_macros/")({
 	component: RouteComponent,
 	validateSearch: search => {
+		// TODO use zod schemas to validate search params
 		console.log("search", search)
-		return true
+		return formSchema.parse(search)
 	},
 })
 

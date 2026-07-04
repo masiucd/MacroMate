@@ -7,8 +7,6 @@ import {CheckIcon, CopyIcon, LinkIcon} from "../icons"
 import {Button} from "../ui/button"
 import {Divider, type StepProps, StepShell} from "./step_primitives"
 
-// ─── Type narrowing ────────────────────────────────────────────────────────────
-
 type RequiredParams = Required<
 	Pick<
 		CalculatorSearchParams,
