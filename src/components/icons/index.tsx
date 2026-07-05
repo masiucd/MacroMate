@@ -7,6 +7,8 @@ import {
 	Link2,
 	ListCheck,
 	type LucideProps,
+	PencilLine,
+	RotateCcw,
 	Salad,
 	Target,
 } from "lucide-react"
@@ -46,3 +48,9 @@ export const CopyIcon = createIcon(Copy)
 
 /** Copy shareable link. */
 export const LinkIcon = createIcon(Link2)
+
+/** Reset / start over. */
+export const ResetIcon = createIcon(RotateCcw)
+
+/** Edit / go back to inputs. */
+export const EditIcon = createIcon(PencilLine)

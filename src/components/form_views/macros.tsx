@@ -104,8 +104,6 @@ function ProteinSliderField({form}: FieldProps) {
 	const preset = useStore(form.store, state => state.values.preset)
 	const isCustom = preset === "custom"
 
-	console.log("preset", preset, "isCustom", isCustom)
-
 	return (
 		<form.Field
 			name="proteinPerKg"

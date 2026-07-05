@@ -40,8 +40,6 @@ export function useWizardForm(
 	initialValues?: Partial<WizardFormValues>,
 	onSubmit?: (values: WizardFormValues) => void,
 ) {
-	console.log("Initial values", initialValues)
-
 	const mergedDefaults: WizardFormValues = initialValues
 		? ({
 				...defaultValues,
@@ -52,12 +50,9 @@ export function useWizardForm(
 	return useForm({
 		defaultValues: mergedDefaults,
 		onSubmit: ({value}) => {
-			// TODO: wire to results step
-			console.log("Value", value)
 			if (onSubmit && typeof onSubmit === "function") {
 				onSubmit(value)
 			}
-			// calcualte macros and make sure the users end up on the result view
 		},
 	})
 }

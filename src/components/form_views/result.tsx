@@ -1,5 +1,5 @@
 import {useLocation} from "@tanstack/react-router"
-import {useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import {bmr, kcalForGoal, type MacroSplit, splitMacros, tdee} from "#/features/calculator/formulas"
 import type {CalculatorSearchParams} from "#/features/calculator/types"
 import {cn} from "#/lib/utils"
@@ -58,6 +58,14 @@ function useCopyButton() {
 export function Result({issues, searchParams}: Pick<StepProps, "issues" | "searchParams">) {
 	const copyText = useCopyButton()
 	const copyLink = useCopyButton()
+	const announceRef = useRef<HTMLDivElement>(null)
+
+	// Announce results to screen readers when the component mounts.
+	useEffect(() => {
+		if (announceRef.current && hasAllRequiredParams(searchParams)) {
+			announceRef.current.textContent = "Your macro results are ready."
+		}
+	}, [searchParams])
 
 	if (!hasAllRequiredParams(searchParams)) {
 		return (
@@ -113,6 +121,8 @@ export function Result({issues, searchParams}: Pick<StepProps, "issues" | "searc
 			subtitle="Here are your calculated daily targets based on the information you provided."
 			issues={issues ?? []}
 		>
+			{/* Polite live region — announces results to screen readers on mount */}
+			<div ref={announceRef} aria-live="polite" aria-atomic="true" className="sr-only" />
 			<CalorieNumber kcal={macros.kcal} />
 
 			<MacroDistributionBar macros={macros} />

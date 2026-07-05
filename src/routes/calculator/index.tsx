@@ -8,7 +8,9 @@ import {Macros} from "#/components/form_views/macros"
 import {PersonalDetails} from "#/components/form_views/personal_details"
 import {Preview} from "#/components/form_views/preview"
 import {Result} from "#/components/form_views/result"
+import {EditIcon, ResetIcon} from "#/components/icons"
 import {NavigationButtons} from "#/components/navigation_buttons"
+
 import {Heading, Text} from "#/components/typography"
 import {Button} from "#/components/ui/button"
 import {ErrorBoundary} from "#/components/wrappers/error_boundary"
@@ -82,6 +84,7 @@ function MacroWizard() {
 	const form = useWizardForm(searchValues, values => {
 		setPage("result")
 		navigate({search: prev => ({...prev, ...values, page: "result"})})
+		window.scrollTo({top: 0, behavior: "smooth"})
 	})
 
 	// `defaultValues` only seed the form at mount, so re-sync whenever search
@@ -107,9 +110,6 @@ function MacroWizard() {
 	const canAdvance = result.ok
 	const issues = result.ok ? [] : result.issues
 
-	console.log("nextPage", nextPage)
-	console.log("prevPage", prevPage)
-
 	const calculateButtonEnabled = page === "preview"
 
 	return (
@@ -123,38 +123,54 @@ function MacroWizard() {
 		>
 			<StepView page={page} form={form} issues={issues} searchParams={search} />
 			<div className="flex gap-4">
-				<NavigationButtons
-					moveBackward={() => {
-						if (prevPage) {
-							setPage(prevPage)
-							navigate({
-								search: prev => ({
-									...prev,
-									page: prevPage,
-									...values,
-								}),
-							})
-						}
-					}}
-					moveForward={() => {
-						if (nextPage) {
-							setPage(nextPage)
-							navigate({
-								search: prev => ({
-									...prev,
-									page: nextPage,
-									...values,
-								}),
-							})
-						}
-					}}
-					prevButtonDisabled={!prevPage}
-					nextButtonDisabled={page === "preview" || !canAdvance || !nextPage}
-				/>
+				{page === "result" ? (
+					<ResultFooter
+						onStartOver={() => {
+							form.reset()
+							navigate({search: () => ({page: "personal_details"})})
+							setPage("personal_details")
+						}}
+						onEdit={() => {
+							navigate({search: prev => ({...prev, page: "personal_details"})})
+							setPage("personal_details")
+						}}
+					/>
+				) : (
+					<>
+						<NavigationButtons
+							moveBackward={() => {
+								if (prevPage) {
+									setPage(prevPage)
+									navigate({
+										search: prev => ({
+											...prev,
+											page: prevPage,
+											...values,
+										}),
+									})
+								}
+							}}
+							moveForward={() => {
+								if (nextPage) {
+									setPage(nextPage)
+									navigate({
+										search: prev => ({
+											...prev,
+											page: nextPage,
+											...values,
+										}),
+									})
+								}
+							}}
+							prevButtonDisabled={!prevPage}
+							nextButtonDisabled={page === "preview" || !canAdvance || !nextPage}
+						/>
 
-				<Button type="submit" disabled={!calculateButtonEnabled}>
-					Calculate
-				</Button>
+						<Button type="submit" disabled={!calculateButtonEnabled}>
+							Calculate
+						</Button>
+					</>
+				)}
 			</div>
 		</form>
 	)
@@ -180,10 +196,48 @@ function StepView({page, form, issues, searchParams}: StepViewProps) {
 		case "preview":
 			return <Preview issues={issues} searchParams={searchParams} />
 		case "result":
-			// TODO need to work on the result view
-			// do we need the form here? maybe not, but we need the search params to display the results
 			return <Result issues={issues} searchParams={searchParams} />
 		default:
 			throw new Error(`Unknown page: ${page}`)
 	}
+}
+
+// ─── Result footer ────────────────────────────────────────────────────────────
+
+/**
+ * Footer shown exclusively on the result step. Provides two actions:
+ * - "Edit inputs" — returns to step 1 keeping all current values so the user
+ *   can tweak a field without losing everything.
+ * - "Start over" — clears the form entirely and navigates to a clean step 1.
+ *   A two-step inline confirmation prevents accidental data loss.
+ */
+function ResultFooter({onStartOver, onEdit}: {onStartOver: () => void; onEdit: () => void}) {
+	const [confirming, setConfirming] = useState(false)
+
+	if (confirming) {
+		return (
+			<div className="flex items-center gap-3">
+				<span className="text-sea-ink-soft text-sm">Clear all and start again?</span>
+				<Button type="button" variant="destructive" size="sm" onClick={onStartOver}>
+					Yes, clear
+				</Button>
+				<Button type="button" variant="ghost" size="sm" onClick={() => setConfirming(false)}>
+					Cancel
+				</Button>
+			</div>
+		)
+	}
+
+	return (
+		<div className="flex gap-3">
+			<Button type="button" variant="outline" size="sm" onClick={onEdit}>
+				<EditIcon size={14} />
+				Edit inputs
+			</Button>
+			<Button type="button" variant="ghost" size="sm" onClick={() => setConfirming(true)}>
+				<ResetIcon size={14} />
+				Start over
+			</Button>
+		</div>
+	)
 }
