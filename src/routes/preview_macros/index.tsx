@@ -12,11 +12,9 @@ export const Route = createFileRoute("/preview_macros/")({
 	errorComponent: ErrorComponent,
 })
 
-// ─── Error fallback ──────────────────────────────────────────────────────────
-
 function ErrorComponent() {
 	return (
-		<PageWrapper className="page-wrap flex min-h-[60vh] flex-col items-center justify-center gap-6 py-16 text-center">
+		<PageWrapper className="page-wrap flex flex-col items-center justify-center gap-6 py-16 text-center">
 			<span className="text-5xl" aria-hidden>
 				⚠️
 			</span>
@@ -30,8 +28,6 @@ function ErrorComponent() {
 		</PageWrapper>
 	)
 }
-
-// ─── Main component ───────────────────────────────────────────────────────────
 
 function RouteComponent() {
 	const params = Route.useSearch() as FormValues
@@ -63,8 +59,6 @@ function RouteComponent() {
 	)
 }
 
-// ─── Header ──────────────────────────────────────────────────────────────────
-
 const GOAL_LABELS: Record<FormValues["goal"], string> = {
 	cut: "Cut · caloric deficit",
 	maintain: "Maintain · caloric balance",
@@ -85,8 +79,6 @@ function Header({goal}: {goal: FormValues["goal"]}) {
 	)
 }
 
-// ─── Infeasibility warning ────────────────────────────────────────────────────
-
 function InfeasibilityWarning() {
 	return (
 		<div
@@ -104,25 +96,20 @@ function InfeasibilityWarning() {
 	)
 }
 
-// ─── kcal hero card ───────────────────────────────────────────────────────────
-
 const GOAL_DELTA_LABELS: Record<FormValues["goal"], string> = {
 	cut: "−20%",
 	maintain: "±0%",
 	bulk: "+15%",
 }
 
-function KcalHero({
-	kcal,
-	bmrVal,
-	tdeeVal,
-	goal,
-}: {
+interface KcalHeroProps {
 	kcal: number
 	bmrVal: number
 	tdeeVal: number
 	goal: FormValues["goal"]
-}) {
+}
+
+function KcalHero({kcal, bmrVal, tdeeVal, goal}: KcalHeroProps) {
 	return (
 		<div className="island-shell rise-in rounded-2xl border p-8 text-center">
 			<p className="island-kicker mb-3">Daily target</p>
@@ -142,15 +129,17 @@ function KcalHero({
 	)
 }
 
-// ─── Macro breakdown ──────────────────────────────────────────────────────────
-
 const MACRO_CONFIG = [
 	{key: "protein", label: "Protein", color: "bg-lagoon", textColor: "text-lagoon-deep"},
 	{key: "carbs", label: "Carbs", color: "bg-palm", textColor: "text-palm"},
 	{key: "fat", label: "Fat", color: "bg-[#e8a838]", textColor: "text-[#b87c10]"},
 ] as const
 
-function MacroBreakdown({macros}: {macros: MacroSplit}) {
+interface MacroBreakdownProps {
+	macros: MacroSplit
+}
+
+function MacroBreakdown({macros}: MacroBreakdownProps) {
 	const segments = [
 		{pct: macros.proteinPct, grams: macros.proteinG, ...MACRO_CONFIG[0]},
 		{pct: macros.carbsPct, grams: macros.carbsG, ...MACRO_CONFIG[1]},
@@ -160,52 +149,68 @@ function MacroBreakdown({macros}: {macros: MacroSplit}) {
 	return (
 		<div className="island-shell rise-in space-y-6 rounded-2xl border p-6 sm:p-8">
 			<p className="island-kicker">Macro split</p>
-
-			{/* Stacked bar */}
-			<div
-				className="flex h-8 w-full overflow-hidden rounded-full"
-				role="img"
-				aria-label={`Macro split: ${Math.round(macros.proteinPct * 100)}% protein, ${Math.round(macros.carbsPct * 100)}% carbs, ${Math.round(macros.fatPct * 100)}% fat`}
-			>
-				{segments.map(s => (
-					<div
-						key={s.key}
-						className={cn(s.color, "transition-all duration-500")}
-						style={{width: `${(s.pct * 100).toFixed(1)}%`}}
-					/>
-				))}
-			</div>
-
-			{/* Macro cards */}
-			<div className="grid grid-cols-3 gap-3 sm:gap-4">
-				{segments.map(s => (
-					<MacroCard
-						key={s.key}
-						label={s.label}
-						grams={s.grams}
-						pct={s.pct}
-						colorClass={s.color}
-						textColorClass={s.textColor}
-					/>
-				))}
-			</div>
+			<StackedBars macros={macros} segments={segments} />
+			<MacroCards segments={segments} />
 		</div>
 	)
 }
 
-function MacroCard({
-	label,
-	grams,
-	pct,
-	colorClass,
-	textColorClass,
-}: {
+interface StackedBarsProps {
+	macros: MacroSplit
+	segments: {
+		key: string
+		pct: number
+		grams: number
+		label: string
+		color: string
+		textColor: string
+	}[]
+}
+
+function StackedBars({macros, segments}: StackedBarsProps) {
+	return (
+		<div
+			className="flex h-8 w-full overflow-hidden rounded-full"
+			role="img"
+			aria-label={`Macro split: ${Math.round(macros.proteinPct * 100)}% protein, ${Math.round(macros.carbsPct * 100)}% carbs, ${Math.round(macros.fatPct * 100)}% fat`}
+		>
+			{segments.map(s => (
+				<div
+					key={s.key}
+					className={cn(s.color, "transition-all duration-500")}
+					style={{width: `${(s.pct * 100).toFixed(1)}%`}}
+				/>
+			))}
+		</div>
+	)
+}
+
+function MacroCards({segments}: {segments: StackedBarsProps["segments"]}) {
+	return (
+		<div className="grid grid-cols-3 gap-3 sm:gap-4">
+			{segments.map(s => (
+				<MacroCard
+					key={s.key}
+					label={s.label}
+					grams={s.grams}
+					pct={s.pct}
+					colorClass={s.color}
+					textColorClass={s.textColor}
+				/>
+			))}
+		</div>
+	)
+}
+
+interface MacroCardProps {
 	label: string
 	grams: number
 	pct: number
 	colorClass: string
 	textColorClass: string
-}) {
+}
+
+function MacroCard({label, grams, pct, colorClass, textColorClass}: MacroCardProps) {
 	return (
 		<div className="island-shell rounded-xl border p-4 text-center">
 			<div className={cn("mx-auto mb-2 h-1.5 w-8 rounded-full", colorClass)} />
@@ -218,8 +223,6 @@ function MacroCard({
 		</div>
 	)
 }
-
-// ─── How we got there ─────────────────────────────────────────────────────────
 
 function HowWeGotThere() {
 	return (
@@ -258,9 +261,11 @@ function HowWeGotThere() {
 	)
 }
 
-// ─── Action buttons ───────────────────────────────────────────────────────────
+interface ActionsProps {
+	params: FormValues
+}
 
-function Actions({params}: {params: FormValues}) {
+function Actions({params}: ActionsProps) {
 	const copyLink = () => {
 		navigator.clipboard.writeText(window.location.href).catch(() => {})
 	}
