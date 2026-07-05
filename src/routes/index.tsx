@@ -1,6 +1,7 @@
 import {createFileRoute, Link} from "@tanstack/react-router"
 
 import {Button} from "#/components/ui/button"
+import {PageWrapper} from "#/components/wrappers/page_wrapper"
 import {FEATURES, STEPS, type StepItem} from "#/config"
 import {appConfig} from "#/config/app"
 
@@ -8,36 +9,38 @@ export const Route = createFileRoute("/")({component: Home})
 
 function Home() {
 	return (
-		<div className="page-wrap space-y-24 py-16">
-			{/* ── Hero ── */}
-			<section className="rise-in mx-auto max-w-2xl space-y-6 text-center">
-				<p className="island-kicker">Free · No account needed</p>
-				<h1 className="display-title font-bold text-5xl text-sea-ink leading-tight sm:text-6xl">
-					Know your macros.
-					<br />
-					<span>Fuel your goals.</span>
-				</h1>
-				<p className="text-lg leading-relaxed">
-					{appConfig.described} Enter your stats once and get a personalized calorie target with a
-					full protein, carb, and fat breakdown — instantly.
-				</p>
-				<div className="flex flex-wrap justify-center gap-3 pt-2">
-					<Button asChild variant="link">
-						<Link to="/calculator">Calculate my macros →</Link>
-					</Button>
-
-					<Button asChild variant="link">
-						<Link to="/how_it_works">How It Works</Link>
-					</Button>
-				</div>
-			</section>
-
+		<PageWrapper className="page-wrap space-y-24 py-16">
+			<Hero />
 			<FeatureCards />
-
 			<HowItWorks />
-
 			<FooterNote />
-		</div>
+		</PageWrapper>
+	)
+}
+
+function Hero() {
+	return (
+		<section className="rise-in mx-auto max-w-2xl space-y-6 text-center">
+			<p className="island-kicker">Free · No account needed</p>
+			<h1 className="display-title font-bold text-5xl text-sea-ink leading-tight sm:text-6xl">
+				Know your macros.
+				<br />
+				<span>Fuel your goals.</span>
+			</h1>
+			<p className="text-lg leading-relaxed">
+				{appConfig.described} Enter your stats once and get a personalized calorie target with a
+				full protein, carb, and fat breakdown — instantly.
+			</p>
+			<div className="flex flex-wrap justify-center gap-3 pt-2">
+				<Button asChild variant="link">
+					<Link to="/calculator">Calculate my macros →</Link>
+				</Button>
+
+				<Button asChild variant="link">
+					<Link to="/how_it_works">How It Works</Link>
+				</Button>
+			</div>
+		</section>
 	)
 }
 
