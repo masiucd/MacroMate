@@ -58,3 +58,5 @@ Design tokens are declared as CSS variables in `:root` / `.dark` and re-exported
 ## Deployment
 
 Netlify, configured via `netlify.toml` and `@netlify/vite-plugin-tanstack-start`. The plugin auto-detects server functions / API routes and packages them as Netlify Functions during `vite build`. Publish dir: `dist/client`. No separate deploy script.
+
+**Production URL:** https://macroamigo.netlify.app/

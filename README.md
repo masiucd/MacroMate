@@ -95,6 +95,8 @@ pnpm dlx shadcn@latest add <component>
 
 ## Deploy to Netlify
 
+**Production:** https://macroamigo.netlify.app/
+
 1. Push this repo to GitHub
 2. Go to [app.netlify.com/start](https://app.netlify.com/start) and import the repo
 3. Netlify auto-detects the build settings from `netlify.toml`
